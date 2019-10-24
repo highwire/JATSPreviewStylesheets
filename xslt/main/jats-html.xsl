@@ -2126,6 +2126,11 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
+  <xsl:template match="app/title">
+    <h2 class="app-title">
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
 
   <xsl:template match="ref-list" name="ref-list">
     <div class="section references">
@@ -2141,9 +2146,8 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
-  <xsl:template match="/ref-list/title"/>
-  <!-- ignore title if ref-list is root element (springrsc3-526) -->
-  <xsl:template match="ref-list[ancestor::article]/title">
+  <xsl:template match="/ref-list/title"/> <!-- ignore title if ref-list is root element (springrsc3-526) -->
+  <xsl:template match="ref-list[exists(ancestor::article) or exists(ancestor::book-part)]/title">
     <h2 class="ref-list title">
       <xsl:apply-templates/>
     </h2>
