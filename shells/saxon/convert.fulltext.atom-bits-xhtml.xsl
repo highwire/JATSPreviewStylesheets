@@ -28,7 +28,7 @@
           $source,
           $runtime-params/* )) else(
           saxon:transform(
-          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html.xsl')),
+          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-ASCE7-html.xsl')),
           $source,
           $runtime-params/* ))"/>
         <!-- cast into XHTML namespace
