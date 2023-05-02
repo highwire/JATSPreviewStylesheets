@@ -24,7 +24,7 @@
         <xsl:variable name="step1" as="document-node()"
           select="
           saxon:transform(
-          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html.xsl')),
+          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-ASCE7-html.xsl')),
           $source,
           $runtime-params/* )"/>
         <!-- cast into XHTML namespace
