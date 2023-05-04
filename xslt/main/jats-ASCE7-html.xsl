@@ -3364,7 +3364,7 @@ or pipeline) parameterized.
           <div class="def-ref-content" id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@xlink:href,'bib_ref'))) else(@xlink:href)}" reference-id="{if(contains(@xlink:href,'bib_ref'))then(substring-after(@xlink:href,'bib_ref')) else(substring-after(@xlink:href,'ref_'))}"></div>
         </div>
       </xsl:when>
-      <xsl:when test="@ext-link-type='standard' and contains(base-uri(.),'/tmsworks/')">
+      <xsl:when test="@ext-link-type = ('standard', 'chapter', 'section', 'disp-formula', 'fig', 'table', 'fn') and contains(base-uri(.),'/tmsworks/')">
         <xsl:variable name="ext-link-type" select="@ext-link-type"/>
         <xsl:variable name="stdid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[1])else('')"/>
         <xsl:variable name="stdsubid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
@@ -3378,7 +3378,7 @@ or pipeline) parameterized.
                 <xsl:with-param name="subcontenttypeid"><xsl:value-of select="$stdsubid"/></xsl:with-param>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when test="$ext-link-type = ('sec')">
+            <xsl:when test="$ext-link-type = ('section')">
               <xsl:call-template name="standardexternallink">
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="tokenize($stdsubid,'.')[1]"/></xsl:with-param>
@@ -5133,7 +5133,7 @@ or pipeline) parameterized.
           <xsl:if test="if(starts-with($linkid,'p')) then(ends-with(.,concat(replace($linkid,'p','part'),'.atom'))) else(ends-with(.,concat($linkid,'.atom')))">
            <xsl:choose>
              <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
-               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','XXXXcontent')"/>
+               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
              </xsl:when>
              <xsl:when test="contains(.,'/602-16/')">
                <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
