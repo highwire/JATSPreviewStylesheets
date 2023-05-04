@@ -3596,7 +3596,7 @@ or pipeline) parameterized.
           <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
         </div>
       </xsl:when>
-      <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'fn') and contains(base-uri(.),'tmsworks')">
+      <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
         <xsl:variable name="ref-sec" select="/*/@id"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
@@ -3609,7 +3609,7 @@ or pipeline) parameterized.
             <xsl:otherwise>
               <xsl:call-template name="tofindexternalchaperlink">
                 <xsl:with-param name="linkid"><xsl:value-of select="@rid"/></xsl:with-param>
-                <xsl:with-param name="section"><xsl:value-of select="if(@ref-type=('sec','partx','disp-formula', 'fig', 'table', 'fn')) then(true()) else(false())"/></xsl:with-param>
+                <xsl:with-param name="section"><xsl:value-of select="if(@ref-type=('sec','partx')) then(true()) else(false())"/></xsl:with-param>
               </xsl:call-template>
             </xsl:otherwise>
           </xsl:choose></xsl:attribute>
@@ -5074,7 +5074,7 @@ or pipeline) parameterized.
         <xsl:if test="ends-with(.,concat($standardsubcontent,'.atom'))">
           <xsl:choose>
             <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
-              <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'BBB#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'AAAA#',$subcontenttypeid))"/>
+              <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$subcontenttypeid))"/>
             </xsl:when>
             <xsl:when test="contains(.,'/602-16/')">
               <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$subcontenttypeid))"/>
@@ -5119,7 +5119,7 @@ or pipeline) parameterized.
           <xsl:if test="ends-with(.,concat($linkid,'.atom'))">
             <xsl:choose>
               <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
-                <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'AAAA#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'AAAA#',$linkid))"/>
+                <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid))"/>
               </xsl:when>
               <xsl:when test="contains(.,'/602-16/')">
                 <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid))"/>
