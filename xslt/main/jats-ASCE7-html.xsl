@@ -110,8 +110,8 @@ or pipeline) parameterized.
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ali="http://www.niso.org/schemas/ali/1.0/"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:hwp="http://schema.highwire.org/Journal" xmlns:l="http://schema.highwire.org/Linking"
-  xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xlink mml xs ali">
+  xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schema.highwire.org/Compound"
+  exclude-result-prefixes="xlink mml xs ali c">
 
 
   <!--<xsl:output method="xml" indent="no" encoding="UTF-8"
@@ -5127,6 +5127,11 @@ or pipeline) parameterized.
         <xsl:for-each select="tokenize($queryurl,'\n')">
           <xsl:if test="ends-with(.,concat($fig_tbl_fn_eqn,'.atom'))">
             <xsl:choose>
+              <!--<xsl:when test="$contenttype = 'part'">
+                <xsl:variable name="aaa" select="resolve-uri(string(.),base-uri())"/>
+                <xsl:variable name="partdoc" select="document($aaa)//atom:link[@rel='http://schema.highwire.org/Compound#child' and @c:role='http://schema.highwire.org/ItemSet/Item'][1]/@href"/>
+                <xsl:value-of select="if(contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/') or contains(.,'/602-16/')) then(concat(replace(substring-before(.,'.atom'),'tmsworks','content'),'#',$linkid)) else()"/>
+              </xsl:when>-->
               <xsl:when test="contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
                 <xsl:value-of select="if($contenttype = ('disp-formula', 'figx', 'table', 'fn')) then(concat(replace(substring-before(.,'.atom'),'tmsworks','content'),'#',$linkid)) else(if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid)))"/>
               </xsl:when>
