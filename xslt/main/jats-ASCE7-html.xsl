@@ -2606,7 +2606,14 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-
+  <xsl:template match="caption/p">
+    <div class="caption-title">
+      <xsl:if test="contains(base-uri(.),'/tmsworks/')">
+        <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
   <xsl:template match="caption/title">
     <div class="caption-title">
       <xsl:if test="contains(base-uri(.),'/tmsworks/')">
