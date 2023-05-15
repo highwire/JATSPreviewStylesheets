@@ -2735,6 +2735,9 @@ or pipeline) parameterized.
 
   <xsl:template match="list-item">
     <li>
+      <xsl:if test="@id">
+        <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </li>
   </xsl:template>
