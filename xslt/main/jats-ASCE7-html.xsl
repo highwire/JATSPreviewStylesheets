@@ -2261,12 +2261,13 @@ or pipeline) parameterized.
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
             </xsl:call-template>
             </xsl:attribute>
-          <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-            <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-          </xsl:if>
+            
           <xsl:if test="child::xref[@ref-type='section']/@rid">
             <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
             <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+            <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
+              <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+            </xsl:if>
           </xsl:if>
         </div>
         </div>
@@ -2299,12 +2300,12 @@ or pipeline) parameterized.
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
-            <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
-              <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-            </xsl:if>
               <xsl:if test="child::xref[@ref-type='section']/@rid">
                 <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
                 <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+                <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
+                  <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+                </xsl:if>
               </xsl:if>
             </div>
         </div>
@@ -2336,13 +2337,13 @@ or pipeline) parameterized.
               <xsl:call-template name="tmsresourcelink">
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
               </xsl:call-template>
-            <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
-              <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-            </xsl:if>
             </xsl:attribute>
               <xsl:if test="child::xref[@ref-type='section']/@rid">
                 <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
                 <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+                <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
+                  <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+                </xsl:if>
               </xsl:if>
             </div>
         </div>
@@ -2375,12 +2376,12 @@ or pipeline) parameterized.
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
-            <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-              <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-            </xsl:if>
             <xsl:if test="child::xref[@ref-type='section']/@rid">
               <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+              <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
+                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+              </xsl:if>
             </xsl:if>
             
           </div>
@@ -2414,12 +2415,12 @@ or pipeline) parameterized.
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
-            <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-              <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-            </xsl:if>
             <xsl:if test="child::xref[@ref-type='section']/@rid">
               <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+              <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
+                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+              </xsl:if>
             </xsl:if>
           </div>
         </div>
