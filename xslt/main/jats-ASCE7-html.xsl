@@ -3399,7 +3399,7 @@ or pipeline) parameterized.
         <xsl:variable name="stdsubid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
-            <xsl:when test="$ext-link-type = ('disp-formula', 'xfig', 'table', 'fn')">
+            <xsl:when test="$ext-link-type = ('disp-formula', 'fig', 'table', 'fn')">
               <xsl:call-template name="standardexternallink">
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="substring-before($stdsubid,'_')"/></xsl:with-param>
