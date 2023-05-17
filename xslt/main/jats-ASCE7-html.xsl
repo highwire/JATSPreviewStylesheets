@@ -5151,16 +5151,18 @@ or pipeline) parameterized.
     <xsl:param name="section" as="xs:boolean"/>
     <xsl:param name="contenttype" as="xs:string"/>
     <xsl:variable name="fig_tbl_fn_eqn" select="if(contains($linkid,'_')) then(substring-before($linkid,'_')) else($linkid)"/>
+    <xsl:variable name="part-base-uri" select="base-uri()"/>
     <xsl:choose>
       <xsl:when test="$section eq true()">
         <xsl:for-each select="tokenize($queryurl,'\n')">
-          <xsl:if test="ends-with(.,concat($fig_tbl_fn_eqn,'.atom'))">
+          <xsl:if test="if($contenttype = 'part') then(ends-with(.,concat(replace($fig_tbl_fn_eqn,'p','part'),'.atom'))) else(ends-with(.,concat($fig_tbl_fn_eqn,'.atom')))">
             <xsl:choose>
-              <!--<xsl:when test="$contenttype = 'part'">
-                <xsl:variable name="aaa" select="resolve-uri(string(.),base-uri())"/>
-                <xsl:variable name="partdoc" select="document($aaa)//atom:link[@rel='http://schema.highwire.org/Compound#child' and @c:role='http://schema.highwire.org/ItemSet/Item'][1]/@href"/>
-                <xsl:value-of select="if(contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/') or contains(.,'/602-16/')) then(concat(replace(substring-before(.,'.atom'),'tmsworks','content'),'#',$linkid)) else()"/>
-              </xsl:when>-->
+              <xsl:when test="$contenttype = 'part'">
+                <xsl:variable name="part-uri" select="resolve-uri(.,$part-base-uri)"/>
+                <xsl:variable name="part-doc" select="document($part-uri)//atom:link[@rel='http://schema.highwire.org/Compound#child' and @c:role='http://schema.highwire.org/ItemSet/Item'][1]/@href"/>
+                <xsl:value-of select="replace(substring-before($part-doc,'.atom'),'tmsworks','content')"/>
+                <!--<xsl:value-of select="."/>-->              
+              </xsl:when>
               <xsl:when test="contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
                 <xsl:value-of select="if($contenttype = ('disp-formula', 'fig', 'table', 'fn','list')) then(concat(replace(substring-before(.,'.atom'),'tmsworks','content'),'#',$linkid)) else(if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid)))"/>
               </xsl:when>
