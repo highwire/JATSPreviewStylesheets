@@ -2903,8 +2903,20 @@ or pipeline) parameterized.
   </xsl:template>
 
 
+  <!--<xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
+    <div class="citation">
+      <xsl:apply-templates select="node() except (label)"/>
+    </div>
+  </xsl:template>-->
+  
   <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
     <div class="citation">
+      <xsl:if test="parent::ref/label">
+        <span class="label">
+          <xsl:value-of select="parent::ref/label"/>
+        </span>
+        <xsl:text> </xsl:text>
+      </xsl:if>
       <xsl:apply-templates select="node() except (label)"/>
     </div>
   </xsl:template>
