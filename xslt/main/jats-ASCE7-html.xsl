@@ -2709,6 +2709,9 @@ or pipeline) parameterized.
 
   <xsl:template priority="2" mode="list" match="list[@list-type = 'simple' or list-item/label]">
     <ul style="list-style-type: none">
+      <xsl:if test="@specific-use">
+        <xsl:attribute name="class" select="@specific-use"></xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates select="list-item"/>
     </ul>
   </xsl:template>
@@ -2798,7 +2801,7 @@ or pipeline) parameterized.
         </span>
       <xsl:text> </xsl:text>
       </xsl:for-each> -->
-      <xsl:if test="ancestor::list[1][@list-type='simple'] and contains(base-uri(.),'/tmsworks') and not(preceding-sibling::p) and preceding-sibling::*[1][name()='label']">
+      <xsl:if test="ancestor::list[1][@list-type='simple'] and not(preceding-sibling::p) and preceding-sibling::*[1][name()='label']">
         <xsl:value-of select="../label"/><xsl:text> </xsl:text>
       </xsl:if>
       <xsl:apply-templates/>
