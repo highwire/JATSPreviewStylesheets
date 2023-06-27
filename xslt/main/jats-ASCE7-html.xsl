@@ -2248,7 +2248,6 @@ or pipeline) parameterized.
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
-            
             <xsl:if test="child::xref[@ref-type='section']/@rid">
               <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
@@ -2294,7 +2293,7 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>      
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h4 class="section-title">
@@ -2346,7 +2345,6 @@ or pipeline) parameterized.
                 <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
               </xsl:if>
             </xsl:if>
-            
           </div>
         </div>
       </xsl:otherwise>
@@ -3339,6 +3337,17 @@ or pipeline) parameterized.
   <xsl:template
     match="ext-link[not(matches(@specific-use, 'brightcove-(video|audio)'))] | uri | inline-supplementary-material">
     <xsl:choose>
+      <xsl:when test="@ext-link-type=('glossary','def')">
+        <xsl:variable name="glos_std" select="tokenize(@xlink:href,'#')[1]"/>
+        <xsl:variable name="glos_sec_id" select="tokenize(@xlink:href,'#')[2]"/>
+        <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
+        <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
+        <xsl:call-template name="externaltermdeflink">
+          <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/></xsl:with-param>
+          <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
+          <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
       <xsl:when test="@ext-link-type='reference'">
         <div class="ref-wrapper">
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@xlink:href,'bib_ref'))) else(@xlink:href)}">
@@ -3353,6 +3362,13 @@ or pipeline) parameterized.
         <xsl:variable name="stdsubid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
+            <xsl:when test="$ext-link-type = ('disp-formula', 'fig', 'table')">
+              <xsl:call-template name="standardexternallink">
+                <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
+                <xsl:with-param name="standardsubcontent"><xsl:value-of select="substring-before($stdsubid,'_')"/></xsl:with-param>
+                <xsl:with-param name="subcontenttypeid"><xsl:value-of select="$stdsubid"/></xsl:with-param>
+              </xsl:call-template>
+            </xsl:when>
             <xsl:when test="$ext-link-type = ('disp-formula', 'fig', 'table')">
               <xsl:call-template name="standardexternallink">
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
@@ -3561,14 +3577,21 @@ or pipeline) parameterized.
   <xsl:template match="xref">
     <xsl:choose>
       <xsl:when test="@ref-type=('def', 'glossary')">
-        <a>
-          <xsl:attribute name="class">ref-popover</xsl:attribute>
-          <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
-          <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
-          <xsl:attribute name="data-rid" select="@rid"/>
-          <xsl:attribute name="target-id" select="@rid"/>
-          <xsl:apply-templates/>
-        </a>
+        <xsl:variable name="rid" select="@rid"/><xsl:choose>
+          <xsl:when test="not(preceding-sibling::xref[@ref-type=('def','glossary') and @rid=$rid])">
+            <a>
+              <xsl:attribute name="class">ref-popover</xsl:attribute>
+              <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
+              <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
+              <xsl:attribute name="data-rid" select="@rid"/>
+              <xsl:attribute name="target-id" select="@rid"/>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="@ref-type=('bibref')">
         <div class="ref-wrapper">
@@ -3579,10 +3602,10 @@ or pipeline) parameterized.
         </div>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list')">
-          <xsl:variable name="ref-sec" select="if(contains(/*/@id,'st')) then(substring-after(/*/@id,'st')) else(/*/@id)"/>
+        <xsl:variable name="ref-sec" select="if(contains(/*/@id,'st')) then(substring-after(/*/@id,'st')) else(/*/@id)"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
-          <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
+            <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
               <xsl:value-of select="if (@xlink:href) then
                 @xlink:href
                 else
@@ -5035,6 +5058,20 @@ or pipeline) parameterized.
   <!-- ============================================================= -->
   <!--  End stylesheet                                               -->
   <!-- ============================================================= -->
+  <xsl:template name="externaltermdeflink">
+    <xsl:param name="standard_id"/>
+    <xsl:param name="termdef_section_id"/>
+    <xsl:param name="termdef_id"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standard_id,'*.atom'))"/>
+    <xsl:for-each select="tokenize($atomurilist,'\n')">
+      <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
+        <xsl:variable name="markupservice" select="doc(concat('http://markup-svc-dev.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
+        <div class="def-ref-content" id="{concat($standard_id,'_',$termdef_id)}">
+          <xsl:apply-templates select="$markupservice//div[@class='def-item row'][child::div[1][@id=$termdef_id]]/div[2]/p"></xsl:apply-templates>
+        </div>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
   <xsl:template name="standardexternallink">
     <xsl:param name="standard"/>
     <xsl:param name="standardsubcontent"/>
