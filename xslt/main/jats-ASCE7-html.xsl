@@ -167,7 +167,8 @@ or pipeline) parameterized.
 
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
   <xsl:variable name="standardname" select="tokenize(substring-after(base-uri(),'/standard'),'/')[2]"/>
-  <xsl:variable name="queryurl" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standardname,'*.atom'))"/>
+<!--  <xsl:variable name="queryurl" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standardname,'*.atom'))"/>-->
+  <xsl:variable name="queryurl" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standardname,'*.atom'))"/>
   
   <!-- Keys -->
 
