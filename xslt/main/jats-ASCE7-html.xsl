@@ -3685,15 +3685,15 @@ or pipeline) parameterized.
                     </xsl:choose>
                   </xsl:when>
                   <xsl:when test="@ref-type=('disp-formula', 'fig', 'table', 'list')">
-                    <xsl:variable name="atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
-                    <xsl:variable name="chapter-full-uri" select="resolve-uri($atomapath,base-uri())"/>
-                    <xsl:variable name="chapter-doc-ids" select="document(replace($chapter-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
+                    <xsl:variable name="float-atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
+                    <xsl:variable name="float-full-uri" select="resolve-uri($float-atomapath,base-uri())"/>
+                    <xsl:variable name="float-doc-ids" select="document(replace($float-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
                     <xsl:choose>
-                      <xsl:when test="contains($atomapath,'commentary-chapter')">
-                        <xsl:value-of select="replace(concat(substring-before($atomapath,'commentary-chapter'),'standard-chapter/',$chapter-doc-ids,'#',$rid),$jcode,'content')"/>
+                      <xsl:when test="contains($float-atomapath,'commentary-chapter')">
+                        <xsl:value-of select="replace(concat(substring-before($float-atomapath,'commentary-chapter'),'standard-chapter/',$float-doc-ids,'#',$rid),$jcode,'content')"/>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:value-of select="replace(concat(substring-before($atomapath,'.atom'),'#',$rid),$jcode,'content')"/>
+                        <xsl:value-of select="replace(concat(substring-before($float-atomapath,'.atom'),'#',$rid),$jcode,'content')"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:when>    
