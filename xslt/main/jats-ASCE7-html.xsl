@@ -168,7 +168,7 @@ or pipeline) parameterized.
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
   <xsl:variable name="standardname" select="tokenize(substring-after(base-uri(),'/standard'),'/')[2]"/>
 <xsl:variable name="jcode" select="tokenize(base-uri(),'/')[4]"/>
-  <xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>
+  <xsl:variable name="queryurl" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>
   
   <!-- Keys -->
 
@@ -2320,7 +2320,7 @@ or pipeline) parameterized.
   <xsl:template name="div_action_parentSectionInfo">
     <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
-      class="toc-actions test">
+      class="toc-actions testing">
       <xsl:attribute name="resourceDataPath">
         <xsl:call-template name="tmsresourcelink">
           <xsl:with-param name="resourceid">
