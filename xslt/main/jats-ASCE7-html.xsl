@@ -2320,7 +2320,7 @@ or pipeline) parameterized.
   <xsl:template name="div_action_parentSectionInfo">
     <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
-      class="toc-actions tester">
+      class="toc-actions TEST {base-uri()}">
       <xsl:attribute name="resourceDataPath">
         <xsl:call-template name="tmsresourcelink">
           <xsl:with-param name="resourceid">
@@ -3810,7 +3810,7 @@ or pipeline) parameterized.
   <xsl:function name="hwp:getReferencedatom">
     <xsl:param name="corpus"/>
     <xsl:param name="slugID"/>
-    <xsl:sequence select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
+    <xsl:sequence select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
   </xsl:function>
 
   <!-- ============================================================= -->
@@ -5234,10 +5234,10 @@ or pipeline) parameterized.
     <xsl:param name="standard_id"/>
     <xsl:param name="termdef_section_id"/>
     <xsl:param name="termdef_id"/>
-    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard_id,'*.atom'))"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard_id,'*.atom'))"/>
     <xsl:for-each select="tokenize($atomurilist,'\n')">
       <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
-        <xsl:variable name="markupservice" select="doc(concat('http://markup-svc-dev.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
+        <xsl:variable name="markupservice" select="doc(concat('http://markup-svc.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
         <div class="def-ref-content" id="{concat($standard_id,'_',$termdef_id)}">
           <xsl:apply-templates select="$markupservice//div[@class='def-item row'][child::div[1][@id=$termdef_id]]/div[2]/p"></xsl:apply-templates>
         </div>
@@ -5248,7 +5248,7 @@ or pipeline) parameterized.
     <xsl:param name="standard"/>
     <xsl:param name="standardsubcontent"/>
     <xsl:param name="subcontenttypeid"/>
-    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard,'*.atom'))"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard,'*.atom'))"/>
     <xsl:choose>
     <xsl:when test="$standard != '' and $standardsubcontent != '' and $subcontenttypeid != ''">
       <xsl:for-each select="tokenize($atomurilist,'\n')">
