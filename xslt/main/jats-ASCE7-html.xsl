@@ -2320,7 +2320,7 @@ or pipeline) parameterized.
   <xsl:template name="div_action_parentSectionInfo">
     <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
-      class="toc-actions TEST {base-uri()}">
+      class="toc-actions TESTER {base-uri()}">
       <xsl:attribute name="resourceDataPath">
         <xsl:call-template name="tmsresourcelink">
           <xsl:with-param name="resourceid">
@@ -3689,7 +3689,7 @@ or pipeline) parameterized.
                     <xsl:message>float-atomapath : <xsl:value-of select="$float-atomapath"/></xsl:message>
                     <xsl:variable name="float-full-uri" select="resolve-uri($float-atomapath,base-uri())"/>
                     <xsl:message>float-full-uri: <xsl:value-of select="$float-full-uri"/></xsl:message>
-                    <xsl:variable name="float-doc-ids" select="doc(replace($float-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
+                    <xsl:variable name="float-doc-ids" select="if (doc-available(replace($float-full-uri,'\.atom','.source.xml'))) then doc(replace($float-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid else ()"/>
                     <xsl:message>float-doc-ids: <xsl:value-of select="$float-doc-ids"/></xsl:message>
                     <xsl:choose>
                       <xsl:when test="contains($float-atomapath,'commentary-chapter')">
