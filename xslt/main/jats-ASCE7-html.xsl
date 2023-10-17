@@ -3690,7 +3690,6 @@ or pipeline) parameterized.
                     <xsl:choose>
                       <xsl:when test="contains($float-atomapath,'commentary-chapter')">
                         <xsl:value-of select="replace(concat(substring-before($float-atomapath,'commentary-chapter'),'standard-chapter/',$float-doc-ids,'#',$rid),$jcode,'content')"/>
-                      <xsl:value-of select="concat('XXXX',$float-full-uri)"/>
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of select="replace(concat(substring-before($float-atomapath,'.atom'),'#',$rid),$jcode,'content')"/>
