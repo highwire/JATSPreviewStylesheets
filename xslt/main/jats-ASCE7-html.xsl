@@ -111,6 +111,7 @@ or pipeline) parameterized.
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:hwp="http://schema.highwire.org/Journal" xmlns:l="http://schema.highwire.org/Linking"
   xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schema.highwire.org/Compound"
+  xmlns:o="http://www.niso.org/standards/z39-96/ns/oasis-exchange/table"
   exclude-result-prefixes="xlink mml xs ali c">
 
 
@@ -118,6 +119,8 @@ or pipeline) parameterized.
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>-->
 
+
+  <xsl:import href="../oasis-tables/oasis-table-html.xsl"/>
 
   <xsl:output doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
     doctype-system="http://www.w3.org/TR/html4/loose.dtd" encoding="UTF-8"/>
@@ -2629,6 +2632,9 @@ or pipeline) parameterized.
     <xsl:param name="long-desc-id" as="xs:string?" tunnel="yes"/>
     <xsl:apply-templates select="* except long-desc"/>
     <img alt="{replace(tokenize(@xlink:href,'/')[last()],'\.[^\.]*$','')}">
+      <xsl:if test="@content-type = ('deletion','insertion')">
+        <xsl:attribute name="class" select="@content-type"/>
+      </xsl:if>
       <xsl:if test="$long-desc-id">
         <xsl:attribute name="longdesc" select="concat('#',$long-desc-id)"/>
       </xsl:if>
