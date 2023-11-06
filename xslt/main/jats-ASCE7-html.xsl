@@ -2323,7 +2323,7 @@ or pipeline) parameterized.
   <xsl:template name="div_action_parentSectionInfo">
     <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
-      class="toc-actions">
+      class="{if (parent::sec/lower-case(@specific-use) = 'printable') then 'toc-actions printable' else 'toc-actions'}">
       <xsl:attribute name="resourceDataPath">
         <xsl:call-template name="tmsresourcelink">
           <xsl:with-param name="resourceid">
@@ -3761,6 +3761,7 @@ or pipeline) parameterized.
             <!--<xsl:message>reference-atom-query:= <xsl:value-of select="$reference-atom-query"/></xsl:message>-->
             <a>
               <xsl:attribute name="href"><xsl:choose>
+                <!--if the rid is available in the same section/part etc then just # the id-->
                 <xsl:when test="(//*[normalize-space(@id) = $rid])">
                   <xsl:value-of select="if (@xlink:href) then
                     @xlink:href
@@ -3768,10 +3769,17 @@ or pipeline) parameterized.
                     concat('#',@rid)"/>
                 </xsl:when>
                 
-                <!--if the rid is available in the same section/part etc then just # the id-->
+                <!--otherwise create a complete link path-->
                 
-                <xsl:otherwise>
+                <!--<xsl:otherwise>
                   <xsl:value-of select="replace(substring-before($reference-atom-query,'.atom'),'/asceworks/','/content/')"/>
+                </xsl:otherwise>-->
+                <xsl:otherwise>
+                  <xsl:variable name="contentApath" select="replace(substring-before($reference-atom-query,'.atom'),'/asceworks/','/content/')"/>
+                <xsl:variable name="contentApathTokens" select="tokenize($contentApath,'/')"/>
+                  <xsl:variable name="content8Token" select="$contentApathTokens[8]"/>
+                  <xsl:variable name="link" select="if (count($contentApathTokens) > 8) then concat(substring-before($contentApath,$content8Token),$content8Token,'#',$contentApathTokens[last()]) else $contentApath"/>
+                  <xsl:value-of select="$link"/>
                 </xsl:otherwise>
               </xsl:choose></xsl:attribute>
               <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
