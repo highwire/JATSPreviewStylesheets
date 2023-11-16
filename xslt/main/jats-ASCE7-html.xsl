@@ -2963,7 +2963,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x or self::article-title])">
-      <xsl:text>. </xsl:text>
+      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else(.,'. ')"/>
     </xsl:if>
   </xsl:template>
 
@@ -4659,7 +4659,7 @@ or pipeline) parameterized.
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:if test="../given-names[not(../@name-style = 'eastern')] | ../suffix">
-      <xsl:text>, </xsl:text>
+      <xsl:value-of select="if(ends-with(.,',')) then(' ') else(', ')"/>
     </xsl:if>
   </xsl:template>
 
