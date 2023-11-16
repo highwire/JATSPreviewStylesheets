@@ -3376,7 +3376,7 @@ or pipeline) parameterized.
         <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
         <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
         <xsl:call-template name="externaltermdeflink">
-          <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/></xsl:with-param>
+          <xsl:with-param name="standard_id"><xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/></xsl:with-param>
           <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
           <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
         </xsl:call-template>
@@ -3391,7 +3391,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="@ext-link-type = ('standard', 'chapter', 'section', 'sec', 'disp-formula', 'fig', 'table')">
         <xsl:variable name="ext-link-type" select="@ext-link-type"/>
-        <xsl:variable name="stdid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[1])else('')"/>
+        <xsl:variable name="stdid" select="if(contains(@xlink:href,'#'))then(if(contains(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else('')"/>
         <xsl:variable name="stdsubid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
