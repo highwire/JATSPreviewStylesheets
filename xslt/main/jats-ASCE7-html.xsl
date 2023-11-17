@@ -2823,6 +2823,9 @@ or pipeline) parameterized.
     <!-- <span class="generated">[</span>
     <xsl:value-of select="."/>
     <span class="generated">] </span> -->
+    <xsl:if test=". = 'rev-note'">
+      <xsl:attribute name="class" select="'revision-note'"></xsl:attribute>
+    </xsl:if>
   </xsl:template>
 
 
