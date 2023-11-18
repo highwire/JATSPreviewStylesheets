@@ -2767,6 +2767,9 @@ or pipeline) parameterized.
     <!-- <span class="generated">[</span>
     <xsl:value-of select="."/>
     <span class="generated">] </span> -->
+  <xsl:if test=". = 'rev-note'">
+      <xsl:attribute name="class" select="'revision-note'"></xsl:attribute>
+    </xsl:if>
   </xsl:template>
 
 
@@ -3263,6 +3266,9 @@ or pipeline) parameterized.
       <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
     </xsl:copy>
+  <xsl:if test="local-name() = 'table'">
+      <div class="additional-markup"/>
+    </xsl:if>
   </xsl:template>
 
 
@@ -5369,4 +5375,12 @@ or pipeline) parameterized.
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
+  
+  <xsl:template match="o:table">
+    <xsl:apply-imports/>
+    <xsl:if test="local-name() = 'table'">
+      <div class="additional-markup"/>
+    </xsl:if>
+  </xsl:template>
+  
 </xsl:stylesheet>
