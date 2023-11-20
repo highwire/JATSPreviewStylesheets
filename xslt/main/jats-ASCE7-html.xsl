@@ -2260,21 +2260,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h3>
-          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
-            <xsl:attribute name="resourceDataPath">
-              <xsl:call-template name="tmsresourcelink">
-                <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
-                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-              </xsl:if>
-            </xsl:if>
-          </div>-->
-        <xsl:call-template name="div_action_parentSectionInfo"/>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2291,21 +2277,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h4>
-          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
-            <xsl:attribute name="resourceDataPath">
-              <xsl:call-template name="tmsresourcelink">
-                <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:if test="contains(base-uri(.),'/standard-chapter/')  or contains(base-uri(.),'/back-matter/')">
-                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-              </xsl:if>
-            </xsl:if>
-          </div>-->
-        <xsl:call-template name="div_action_parentSectionInfo"/>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2322,21 +2294,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h5>
-          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
-            <xsl:attribute name="resourceDataPath">
-              <xsl:call-template name="tmsresourcelink">
-                <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-              </xsl:if>
-            </xsl:if>
-          </div>-->
-        <xsl:call-template name="div_action_parentSectionInfo"/>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2353,21 +2311,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h6>
-          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
-            <xsl:attribute name="resourceDataPath">
-              <xsl:call-template name="tmsresourcelink">
-                <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-              </xsl:if>
-            </xsl:if>
-          </div>-->
-        <xsl:call-template name="div_action_parentSectionInfo"/>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -3022,7 +2966,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x or self::article-title])">
-      <xsl:text>. </xsl:text>
+      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else(.,'. ')"/>
     </xsl:if>
   </xsl:template>
 
@@ -3438,7 +3382,7 @@ or pipeline) parameterized.
         <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
         <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
         <xsl:call-template name="externaltermdeflink">
-          <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/></xsl:with-param>
+          <xsl:with-param name="standard_id"><xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/></xsl:with-param>
           <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
           <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
         </xsl:call-template>
@@ -3453,7 +3397,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="@ext-link-type = ('standard', 'chapter', 'section', 'sec', 'disp-formula', 'fig', 'table')">
         <xsl:variable name="ext-link-type" select="@ext-link-type"/>
-        <xsl:variable name="stdid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[1])else('')"/>
+        <xsl:variable name="stdid" select="if(contains(@xlink:href,'#'))then(if(contains(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else('')"/>
         <xsl:variable name="stdsubid" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
@@ -3750,7 +3694,6 @@ or pipeline) parameterized.
                     </xsl:choose>
                   </xsl:when>
                   <xsl:when test="@ref-type='standard'">
-                    <!--if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))-->
                     <xsl:value-of select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
                   </xsl:when>
                   <xsl:when test="starts-with(@rid,$ref-sec)">
@@ -4716,7 +4659,7 @@ or pipeline) parameterized.
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:if test="../given-names[not(../@name-style = 'eastern')] | ../suffix">
-      <xsl:text>, </xsl:text>
+      <xsl:value-of select="if(ends-with(.,',')) then(' ') else(', ')"/>
     </xsl:if>
   </xsl:template>
 
@@ -5469,7 +5412,7 @@ or pipeline) parameterized.
   <xsl:template name="errataLink">
     <xsl:param name="errataID"/>
     <xsl:variable name="standard-id" select="tokenize($errataID,'\.')[1]"/>
-    <xsl:variable name="errataurl" select="if(starts-with($standard-id,'sc')) then(concat('/',$standard-id,'/commentary-sec-errata/',$errataID,'.atom')) else(concat('/',$standard-id,'/standard-sec-errata/',$errataID,'.atom'))"/>
+    <xsl:variable name="errataurl" select="if(starts-with($standard-id,'bm')) then(concat('/',$standard-id,'/back-matter-sec-errata/',$errataID,'.atom')) else(if(starts-with($standard-id,'sc')) then(concat('/',$standard-id,'/commentary-sec-errata/',$errataID,'.atom')) else(concat('/',$standard-id,'/standard-sec-errata/',$errataID,'.atom')))"/>
     <xsl:for-each select="tokenize($queryurl,'\n')">
       <xsl:if test="ends-with(.,$errataurl)">
         <xsl:value-of select="."/>
