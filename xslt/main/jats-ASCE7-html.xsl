@@ -3382,7 +3382,7 @@ or pipeline) parameterized.
         <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
         <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
         <xsl:call-template name="externaltermdeflink">
-          <xsl:with-param name="standard_id"><xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/></xsl:with-param>
+          <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/><!--<xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/>--></xsl:with-param>
           <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
           <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
         </xsl:call-template>
@@ -5270,7 +5270,8 @@ or pipeline) parameterized.
     <xsl:param name="standard_id"/>
     <xsl:param name="termdef_section_id"/>
     <xsl:param name="termdef_id"/>
-    <xsl:variable name="atomurilist" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard_id,'*.atom'))"/>
+    <xsl:variable name="standard-name" select="if(contains($standard_id,'st')) then(replace($standard_id,'[A-Za-z]+','')) else($standard_id)"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard-name,'*.atom'))"/>
     <xsl:for-each select="tokenize($atomurilist,'\n')">
       <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
         <xsl:variable name="markupservice" select="doc(concat('http://markup-svc.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
