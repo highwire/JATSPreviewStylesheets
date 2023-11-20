@@ -5368,7 +5368,7 @@ or pipeline) parameterized.
 <xsl:template name="errataLink">
     <xsl:param name="errataID"/>
     <xsl:variable name="standard-id" select="tokenize($errataID,'\.')[1]"/>
-    <xsl:variable name="errataurl" select="if(starts-with($standard-id,'sc')) then(concat('/',$standard-id,'/commentary-sec-errata/',$errataID,'.atom')) else(concat('/',$standard-id,'/standard-sec-errata/',$errataID,'.atom'))"/>
+  <xsl:variable name="errataurl" select="if(starts-with($standard-id,'bm')) then(concat('/',$standard-id,'/back-matter-sec-errata/',$errataID,'.atom')) else(if(starts-with($standard-id,'sc')) then(concat('/',$standard-id,'/commentary-sec-errata/',$errataID,'.atom')) else(concat('/',$standard-id,'/standard-sec-errata/',$errataID,'.atom')))"/>
     <xsl:for-each select="tokenize($queryurl,'\n')">
       <xsl:if test="ends-with(.,$errataurl)">
         <xsl:value-of select="."/>
