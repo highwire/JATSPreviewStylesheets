@@ -3431,7 +3431,7 @@ or pipeline) parameterized.
             </xsl:when>
             <xsl:when test="$ext-link-type = ('standard')">
               <xsl:call-template name="standardexternallink">
-                <xsl:with-param name="standard"><xsl:value-of select="@xlink:href"/></xsl:with-param>
+                <xsl:with-param name="standard"><xsl:value-of select="if(starts-with(@xlink:href,'st')) then(replace(@xlink:href,'[A-Za-z]+','')) else(@xlink:href)"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="''"/></xsl:with-param>
                 <xsl:with-param name="subcontenttypeid"><xsl:value-of select="''"/></xsl:with-param>
               </xsl:call-template>
