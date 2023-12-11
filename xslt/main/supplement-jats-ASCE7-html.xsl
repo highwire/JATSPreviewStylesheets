@@ -2104,7 +2104,6 @@ or pipeline) parameterized.
         <xsl:call-template name="named-anchor"/>
         <xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>
         <div class="toc-content">
-          <h1>TESTING THE SUPPLEMENT</h1>
           <xsl:apply-templates select="sec-meta"/>
           <xsl:apply-templates mode="drop-title"/>
         </div>

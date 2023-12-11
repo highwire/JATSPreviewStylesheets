@@ -18,7 +18,8 @@
   
   <xsl:template match="/">
     <xsl:choose>
-      <xsl:when test="atom:entry">
+      <!--applying only on the supplement section, figure, tables-->
+      <xsl:when test="atom:entry[contains(base-uri(.),'-suppl')]">
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
         <!-- convert into HTML for display -->
         <xsl:variable name="step1" as="document-node()"
