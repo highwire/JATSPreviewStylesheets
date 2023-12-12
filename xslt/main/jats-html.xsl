@@ -2482,6 +2482,13 @@ or pipeline) parameterized.
           <xsl:value-of select="normalize-space(string(.))"/>
         </xsl:attribute>
       </xsl:for-each>
+      <xsl:if test="ancestor::fig[1]/alt-text">
+        <xsl:for-each select="ancestor::fig[1]/alt-text">
+          <xsl:attribute name="alt">
+            <xsl:value-of select="normalize-space(string(.))"/>
+          </xsl:attribute>
+        </xsl:for-each>
+      </xsl:if>
       <xsl:call-template name="assign-src"/>
     </img>
   </xsl:template>
