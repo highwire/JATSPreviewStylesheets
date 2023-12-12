@@ -3406,20 +3406,22 @@ or pipeline) parameterized.
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="substring-before($stdsubid,'_')"/></xsl:with-param>
                 <xsl:with-param name="subcontenttypeid"><xsl:value-of select="$stdsubid"/></xsl:with-param>
+                <xsl:with-param name="extlinktype"><xsl:value-of select="$ext-link-type"/></xsl:with-param>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when test="$ext-link-type = ('disp-formula', 'fig', 'table', 'list')">
+            <!--<xsl:when test="$ext-link-type = ('disp-formula', 'fig', 'table', 'list')">
               <xsl:call-template name="standardexternallink">
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="substring-before($stdsubid,'_')"/></xsl:with-param>
                 <xsl:with-param name="subcontenttypeid"><xsl:value-of select="$stdsubid"/></xsl:with-param>
               </xsl:call-template>
-            </xsl:when>
+            </xsl:when>-->
             <xsl:when test="$ext-link-type = ('section','sec')">
               <xsl:call-template name="standardexternallink">
                 <xsl:with-param name="standard"><xsl:value-of select="$stdid"/></xsl:with-param>
                 <xsl:with-param name="standardsubcontent"><xsl:value-of select="substring-before($stdsubid,'.')"/></xsl:with-param>
                 <xsl:with-param name="subcontenttypeid"><xsl:value-of select="$stdsubid"/></xsl:with-param>
+                <xsl:with-param name="extlinktype"><xsl:value-of select="''"/></xsl:with-param>
               </xsl:call-template>
             </xsl:when>
             <xsl:when test="$ext-link-type = ('chapter')">
@@ -5279,12 +5281,16 @@ or pipeline) parameterized.
     <xsl:param name="standard"/>
     <xsl:param name="standardsubcontent"/>
     <xsl:param name="subcontenttypeid"/>
+    <xsl:param name="extlinktype"/>
     <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard,'*.atom'))"/>
     <xsl:choose>
     <xsl:when test="$standard != '' and $standardsubcontent != '' and $subcontenttypeid != ''">
       <xsl:for-each select="tokenize($atomurilist,'\n')">
-        <xsl:if test="ends-with(.,concat($subcontenttypeid,'.atom'))">
+        <xsl:if test="ends-with(.,concat(if($extlinktype = ('disp-formula', 'fig', 'table', 'list')) then($standardsubcontent) else($subcontenttypeid),'.atom'))">
           <xsl:choose>
+            <xsl:when test="$extlinktype = ('disp-formula', 'fig', 'table', 'list')">
+              <xsl:value-of select="concat('/content',replace(substring-after(.,$jcode),'.atom',''),'#',$subcontenttypeid)"/>
+            </xsl:when>
             <xsl:when test="contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
               <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$subcontenttypeid))"/>
             </xsl:when>
@@ -5333,7 +5339,6 @@ or pipeline) parameterized.
         </xsl:for-each>
       </xsl:when>
     <xsl:otherwise>
-      
     </xsl:otherwise>
   </xsl:choose>
     
