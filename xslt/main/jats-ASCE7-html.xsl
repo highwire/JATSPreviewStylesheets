@@ -3380,12 +3380,20 @@ or pipeline) parameterized.
         <xsl:variable name="glos_std" select="tokenize(@xlink:href,'#')[1]"/>
         <xsl:variable name="glos_sec_id" select="tokenize(@xlink:href,'#')[2]"/>
         <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
-        <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
-        <xsl:call-template name="externaltermdeflink">
-          <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/><!--<xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/>--></xsl:with-param>
-          <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
-          <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
-        </xsl:call-template>
+        <xsl:variable name="glo-href-id" select="@xlink:href"/>
+        <xsl:choose>
+          <xsl:when test="not(preceding-sibling::ext-link[@xlink:href = $glo-href-id])">
+            <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'_',$glos_id)}" target-id="{concat($glos_std,'_',$glos_id)}"><xsl:apply-templates/></a>
+            <xsl:call-template name="externaltermdeflink">
+              <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/><!--<xsl:value-of select="if(contains($glos_std,'st')) then(replace($glos_std,'[A-Za-z]+','')) else($glos_std)"/>--></xsl:with-param>
+              <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
+              <xsl:with-param name="termdef_id"><xsl:value-of select="$glos_id"/></xsl:with-param>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="@ext-link-type='reference'">
         <div class="ref-wrapper">
