@@ -3644,13 +3644,18 @@ or pipeline) parameterized.
       </xsl:apply-templates>
     </a>
   </xsl:template>
-
+  <xsl:template match="def[@class='def-hide']/xref[@ref-type=('glossary','def')]">
+    <xsl:apply-templates/>
+  </xsl:template>
   <xsl:template match="def[@class='def-hide']">
     <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-  <xsl:template match="xref">
+  <xsl:template match="def/p/xref[@ref-type=('glossary','def')]">
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xref[not(@xref-rel-sec-id)]">
     <xsl:variable name="rid" select="normalize-space(@rid)"/>
     <xsl:choose>
       <xsl:when test="contains(base-uri(),'tmsworks')">
