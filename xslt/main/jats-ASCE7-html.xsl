@@ -3647,7 +3647,10 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-  <xsl:template match="xref">
+  <xsl:template match="def/p/xref[@ref-type=('glossary','def')]">
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xref[not(@xref-rel-sec-id)]">
     <xsl:variable name="rid" select="normalize-space(@rid)"/>
     <xsl:choose>
       <xsl:when test="contains(base-uri(),'tmsworks')">
