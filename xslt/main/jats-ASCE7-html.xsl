@@ -3714,17 +3714,17 @@ or pipeline) parameterized.
                   </xsl:when>
                   <xsl:when test="@ref-type='sec'">
                     <xsl:variable name="sec-atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
-                    <xsl:variable name="sec-full-uri" select="resolve-uri($sec-atomapath,base-uri())"/>
-                    <xsl:variable name="sec-doc-ids" select="document(replace($sec-full-uri,'\.atom','.source.xml'))/*/title/xref/@rid"/>
+                    <xsl:variable name="sec-full-uri" select="concat('http://atom.highwire.org',$sec-atomapath)"/>
+                    <xsl:variable name="sec-doc-ids" select="doc(replace($sec-full-uri,'\.atom','.source.xml'))/*/title/xref/@rid"/>
                     <xsl:variable name="standard-sec-atomapath">
-                      <xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="$rid"/></xsl:with-param></xsl:call-template>
+                      <xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="if(contains($sec-atomapath,'/commentary-section')) then($sec-doc-ids) else($rid)"/></xsl:with-param></xsl:call-template>
                     </xsl:variable>
                     <xsl:choose>
-                      <xsl:when test="contains($sec-atomapath,'commentary-section')">
+                      <xsl:when test="contains($standard-sec-atomapath,'commentary-section')">
                         <xsl:value-of select="replace(concat(substring-before($standard-sec-atomapath,'/commentary-section'),'#',$rid),$jcode,'content')"/>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:value-of select="replace(concat(substring-before($sec-atomapath,'/standard-section'),'#',$rid),$jcode,'content')"/>
+                        <xsl:value-of select="replace(concat(substring-before($standard-sec-atomapath,'/standard-section'),'#',$rid),$jcode,'content')"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:when>
