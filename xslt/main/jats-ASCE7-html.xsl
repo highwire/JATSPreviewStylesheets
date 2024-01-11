@@ -528,6 +528,30 @@ or pipeline) parameterized.
       <!-- unhandled element: free_to_read -->
     </span>
   </xsl:template>
+  <xsl:template match="comment()">
+    <xsl:choose>
+      <xsl:when test="matches(.,'xref rid=') or matches(.,'xref ref-type=')">
+        <xsl:variable name="defid"><xsl:value-of select="if(matches(.,'xref rid=')) then(substring-before(substring-after(.,'&quot;'),'&quot;')) else(substring-before(substring-after(.,'rid=&quot;'),'&quot;&gt;'))" disable-output-escaping="yes"/></xsl:variable>
+        <xsl:text disable-output-escaping="yes">&lt;a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="</xsl:text><xsl:value-of select="$defid"/><xsl:text disable-output-escaping="yes">" target-id="</xsl:text><xsl:value-of select="$defid"/><xsl:value-of select="'&quot;'" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="matches(.,'^&lt;/xref&gt;')">
+        <xsl:variable name="defid"><xsl:value-of select="if(matches(./preceding-sibling::comment()[1],'xref rid=')) then(substring-before(substring-after(.,'&quot;'),'&quot;')) else(substring-before(substring-after(./preceding-sibling::comment()[1],'rid=&quot;'),'&quot;&gt;'))" disable-output-escaping="yes"/></xsl:variable>
+        <xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
+        <xsl:choose>
+          <xsl:when test="exists(//def-list/def-item[term[@id=$defid]]/def)">
+            <xsl:for-each select="//def-list/def-item[term[@id=$defid]]/def/p">
+              <div class="def-ref-content" id="{$defid}">
+                <p class="first" id="{generate-id()}"><xsl:apply-templates select="node() except comment()"/></p>
+              </div>
+            </xsl:for-each>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:comment><xsl:value-of select="." disable-output-escaping="yes"/></xsl:comment>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- HW addition -->
   <xsl:template
@@ -3646,9 +3670,6 @@ or pipeline) parameterized.
     <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
       <xsl:apply-templates/>
     </div>
-  </xsl:template>
-  <xsl:template match="def/p/xref[@ref-type=('glossary','def')]">
-    <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="xref[not(@xref-rel-sec-id)]">
     <xsl:variable name="rid" select="normalize-space(@rid)"/>
