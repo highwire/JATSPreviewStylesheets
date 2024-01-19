@@ -563,6 +563,19 @@ or pipeline) parameterized.
             <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
           </a>
         </xsl:when>
+        <xsl:when test="xref[@ref-type='author-notes']/@rid = parent::contrib-group/following-sibling::author-notes/fn/@id">
+          <a href="javascript://" class="orcid" role="button" tabindex="0" data-container="body"
+            data-toggle="popover" data-placement="right" data-trigger="focus" title=""
+            data-html="true">
+            <xsl:attribute name="data-content">
+              <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid"/>
+              <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id = $author-notes-rid]/p/uri[@content-type='orcid']"/>
+              <xsl:apply-templates select="bio" mode="bio-and-orcid"/>
+            </xsl:attribute>
+            <xsl:attribute name="data-original-title" select="'Author Bio'"/>
+            <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+          </a>
+        </xsl:when>
         <xsl:when test="bio">
           <a href="javascript://" role="button" tabindex="0" data-container="body"
             data-toggle="popover" data-placement="right" data-trigger="focus" title=""

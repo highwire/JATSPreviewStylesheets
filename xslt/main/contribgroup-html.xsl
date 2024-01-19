@@ -13,7 +13,7 @@
       <div>
         <xsl:choose>
           <xsl:when test="book">
-            <xsl:apply-templates select="//contrib-group[parent::book-meta]" mode="contrib-group"/>
+            <xsl:apply-templates select="//contrib-group[parent::book-meta or parent::book-part-meta]" mode="contrib-group"/>
           </xsl:when>
           <xsl:when test="book-part">
             <xsl:apply-templates select="//contrib-group[parent::book-part-meta]" mode="contrib-group"/>
