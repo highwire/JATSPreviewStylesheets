@@ -3276,6 +3276,18 @@ or pipeline) parameterized.
   </xsl:template>
 
 
+  <xsl:template match="target" mode="MoveInPara">
+    <xsl:choose>
+      <xsl:when test="@target-type eq 'page'">
+        <span class="page-number" data-page-number="{substring-after(@id,'pg')}" id="{@id}"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="named-anchor"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
   <xsl:template match="styled-content">
     <span>
       <xsl:copy-of select="@style"/>
@@ -4704,7 +4716,8 @@ or pipeline) parameterized.
 
   <xsl:template match="option/label">
     <span class="answer-label">
-      <xsl:apply-templates/>
+      <!--<xsl:apply-templates/>-->
+      <xsl:apply-templates select="node() except target"/>
     </span>
   </xsl:template>
 
@@ -4712,6 +4725,9 @@ or pipeline) parameterized.
     <xsl:text> </xsl:text>
     <p>
       <xsl:apply-templates/>
+      <xsl:if test="../label/target">
+        <xsl:apply-templates select="../label/target" mode="MoveInPara"/>
+      </xsl:if>
     </p>
   </xsl:template>
 
