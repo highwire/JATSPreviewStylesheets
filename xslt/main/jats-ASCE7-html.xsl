@@ -2101,7 +2101,9 @@ or pipeline) parameterized.
     <div class="section">
       <div id="{concat('print_',@id)}">
         <xsl:call-template name="named-anchor"/>
-        <xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>
+        <!-- MS-417 commented -->
+        <!--<xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>-->
+        <xsl:apply-templates select="title"/>
         <div class="toc-content">
           <xsl:apply-templates select="sec-meta"/>
           <xsl:apply-templates mode="drop-title"/>
@@ -2233,7 +2235,17 @@ or pipeline) parameterized.
   
   <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+          <h2 class="section-title">
+            <xsl:if test="preceding-sibling::label">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
+          </h2>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h2 class="section-title">
@@ -2250,7 +2262,17 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level2' or count(ancestor::sec) eq 1]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+          <h3 class="section-title">
+            <xsl:if test="preceding-sibling::label">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
+          </h3>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h3 class="section-title">
@@ -2267,7 +2289,17 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>      
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+          <h4 class="section-title">
+            <xsl:if test="preceding-sibling::label">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
+          </h4>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
+        </div>
+      </xsl:when>      
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h4 class="section-title">
@@ -2284,7 +2316,17 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+          <h5 class="section-title">
+            <xsl:if test="preceding-sibling::label">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
+          </h5>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h5 class="section-title">
@@ -2301,7 +2343,17 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[count(ancestor::sec) gt 3]/title">
     <xsl:choose>
-      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="(matches(child::comment()[1],'dummy-title$'))">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+          <h6 class="section-title unmatched">
+            <xsl:if test="preceding-sibling::label">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
+          </h6>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h6 class="section-title unmatched">
