@@ -4704,7 +4704,7 @@ or pipeline) parameterized.
   <xsl:template match="option/label">
     <span class="answer-label">
       <!--<xsl:apply-templates/>-->
-      <xsl:apply-templates select="node()|text() except target"/>
+      <xsl:apply-templates select="node() except target"/>
     </span>
   </xsl:template>
 
