@@ -21,10 +21,10 @@
           <xsl:apply-templates select="//book-back"/>
         </div>
       </xsl:when>
-      <xsl:when test="book-part[@book-part-type = ('part','subchapter')]">
+      <xsl:when test="book-part[@book-part-type eq 'part']">
         <div class="part">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
-          <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type = ('part','subchapter')]]"/>
+          <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'part']]"/>
         <!-- <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/> -->
       </div>
       </xsl:when>
