@@ -2834,7 +2834,12 @@ or pipeline) parameterized.
       <xsl:text> </xsl:text>
       </xsl:for-each> -->
       <xsl:if test="ancestor::list[1][@list-type='simple'] and not(preceding-sibling::p) and preceding-sibling::*[1][name()='label']">
-        <xsl:value-of select="../label"/><xsl:text> </xsl:text>
+        <!--<xsl:value-of select="../label"/><xsl:text> </xsl:text>-->
+        <xsl:value-of select="../label[not(child::named-content)]"/>
+        <xsl:if test="../label/named-content">
+          <xsl:apply-templates select="../label/named-content"/>
+        </xsl:if>
+        <xsl:text> </xsl:text>
       </xsl:if>
       <xsl:apply-templates/>
     </p>
