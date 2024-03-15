@@ -2098,18 +2098,27 @@ or pipeline) parameterized.
 
 
   <xsl:template match="sec">
-    <div class="section">
-      <div id="{concat('print_',@id)}">
-        <xsl:call-template name="named-anchor"/>
-        <!-- MS-417 commented -->
-        <!--<xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>-->
-        <xsl:apply-templates select="title"/>
-        <div class="toc-content">
-          <xsl:apply-templates select="sec-meta"/>
-          <xsl:apply-templates mode="drop-title"/>
+    <xsl:choose>
+      <xsl:when test="child::title[comment() eq 'dummy-title'] and count(child::*[local-name() != 'title' and local-name() != 'sec']) eq 0">
+        <div class="section">
+          <xsl:apply-templates select="* except title"/>
         </div>
-      </div>
-    </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="section">
+          <div id="{concat('print_',@id)}">
+            <xsl:call-template name="named-anchor"/>
+            <!-- commented MS-417 -->
+            <!--<xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>-->
+            <xsl:apply-templates select="title"/>
+            <div class="toc-content">
+              <xsl:apply-templates select="sec-meta"/>
+              <xsl:apply-templates mode="drop-title"/>
+            </div>
+          </div>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="boxed-text/sec">
