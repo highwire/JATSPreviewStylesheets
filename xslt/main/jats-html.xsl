@@ -167,6 +167,9 @@ or pipeline) parameterized.
 
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
 
+  <!-- Add corpus if required first-name and surname -->
+  <xsl:variable name="first-last" select="if(some $jcode in base-uri() satisfies matches($jcode,'/ersworks/')) then true() else false()"/>
+
   <!-- Keys -->
 
   <!-- To reduce dependency on a DTD for processing, we declare
@@ -611,8 +614,38 @@ or pipeline) parameterized.
     </li>
   </xsl:template>
 
-  <xsl:template match="name" mode="contrib-group">
+  <!--<xsl:template match="name" mode="contrib-group">
     <xsl:apply-templates select="* except (x)" mode="#current"/>
+  </xsl:template>-->
+
+  <xsl:template match="name" mode="contrib-group">
+    <xsl:choose>
+      <xsl:when test="$first-last">
+        <xsl:apply-templates mode="name-first-last" select="prefix,given-names,surname,suffix"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="* except (x)" mode="#current"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template match="prefix" mode="name-first-last">
+    <xsl:apply-templates select="node() except (x)"/>
+    <xsl:text xml:space="preserve"> </xsl:text>
+  </xsl:template>
+  
+  <xsl:template match="suffix" mode="name-first-last">
+    <xsl:text xml:space="preserve"> </xsl:text>
+    <xsl:apply-templates select="node() except (x)"/>
+  </xsl:template>
+  
+  <xsl:template match="surname" mode="name-first-last">
+    <xsl:apply-templates select="node() except (x)"/>
+  </xsl:template>
+  
+  <xsl:template match="given-names" mode="name-first-last">
+    <xsl:apply-templates select="node() except (x)"/>
+    <xsl:text xml:space="preserve"> </xsl:text>
   </xsl:template>
 
   <xsl:template match="surname" mode="contrib-group">
