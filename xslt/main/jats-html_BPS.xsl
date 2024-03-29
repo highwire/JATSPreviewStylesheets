@@ -2710,6 +2710,9 @@ or pipeline) parameterized.
       </xsl:choose>
     </xsl:variable>
     <ol style="list-style-type: {$style}">
+      <xsl:if test="@continued-from/normalize-space() and $style=('lower-roman','upper-roman', 'decimal')">
+        <xsl:attribute name="start" select="hwp:find-start-number(@continued-from/normalize-space(), self::list) + 1"/>
+      </xsl:if>
       <xsl:apply-templates select="list-item"/>
     </ol>
   </xsl:template>
@@ -5036,6 +5039,23 @@ or pipeline) parameterized.
   <xsl:template match="subj-group"/>
   <xsl:template match="toc"/>
   <!--<xsl:template match="x"/>-->
+
+
+  <!--funtion to find the start number for a continued list from it previous/last list-->
+  <xsl:function name="hwp:find-start-number">
+    <xsl:param name="list-continued-from-id"/>
+    <xsl:param name="context"/>
+    <xsl:choose>
+      <xsl:when test="$context/preceding::list[(@id = $list-continued-from-id) and @continued-from/normalize-space()]">
+        <xsl:variable name="last-list-item-count" select="count($context/preceding::list[@id = $list-continued-from-id]/list-item)"/>
+        <xsl:sequence select="hwp:find-start-number($context/preceding::list[(@id = $list-continued-from-id) and @continued-from/normalize-space()]/@continued-from, $context/preceding::list[(@id = $list-continued-from-id) and @continued-from/normalize-space()]) + $last-list-item-count"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="count($context/preceding::list[@id = $list-continued-from-id]/list-item)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+  </xsl:function>
 
 
   <!-- ============================================================= -->
