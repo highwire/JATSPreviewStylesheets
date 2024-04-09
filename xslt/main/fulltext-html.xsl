@@ -35,7 +35,7 @@
         </div>
       </xsl:when>
       <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
-      <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
+      <xsl:when test="book-part[matches(@book-part-type, '^([Cc]hapter|[Ss]ubchapter)$')]">
         <div class="chapter">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
@@ -85,11 +85,11 @@
           <xsl:apply-templates/>
         </div>
       </xsl:when>-->
-      <xsl:when test="some $jcode in ('/bpsworks/','/ersworks/') satisfies contains(base-uri(.),$jcode) and book-part[@id and @book-part-type]">
+      <!--<xsl:when test="some $jcode in ('/bpsworks/','/ersworks/') satisfies contains(base-uri(.),$jcode) and book-part[@id and @book-part-type]">
         <div class="{book-part/@book-part-type}">
           <xsl:apply-templates/>
         </div>
-      </xsl:when>
+      </xsl:when>-->
       <xsl:otherwise/>
     </xsl:choose>
   </xsl:template>
