@@ -67,7 +67,7 @@
         </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'preface']">
-        <div class="reference-topic">
+        <div class="preface">
           <xsl:apply-templates select="book-part/body"/>
           <xsl:apply-templates select="book-part/back"/>
         </div>
