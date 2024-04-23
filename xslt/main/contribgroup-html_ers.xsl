@@ -80,7 +80,6 @@
   
   <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta or parent::article-meta][contrib[@contrib-type eq 'editor']]" mode="contrib-group">
     <div class="contrib-group-editors">
-      <span class="contributor-list-label">Edited by:</span>
       <ul class="contributor-list" data-list-type="editors">
         <xsl:apply-templates select="contrib[@contrib-type eq 'editor']" mode="contrib-group"/>
       </ul>
