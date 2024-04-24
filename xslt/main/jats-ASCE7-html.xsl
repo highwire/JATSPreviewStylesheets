@@ -3619,9 +3619,9 @@ or pipeline) parameterized.
   <xsl:template match="styled-content">
     <span>
       <xsl:copy-of select="@style"/>
-      <xsl:for-each select="@style-type">
-        <xsl:attribute name="{if(@style-type='math-font') then('style') else('class')}">
-          <xsl:value-of select="if(@style-type='math-font') then('font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;') else(.)"/>
+      <xsl:for-each select="@style-type">        
+        <xsl:attribute name="{if(. = ('MJXc-TeX-main-R','math-font')) then('style') else('class')}">
+          <xsl:value-of select="if(. = ('MJXc-TeX-main-R','math-font')) then('font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;') else(.)"/>
         </xsl:attribute>
       </xsl:for-each>
       <xsl:apply-templates/>
