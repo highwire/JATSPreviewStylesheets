@@ -66,6 +66,12 @@
           <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'preface']">
+        <div class="preface">
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
+        </div>
+      </xsl:when>
       <xsl:when test="book-part[@specific-use eq 'published-online']">
         <div class="back-matter">
           <xsl:apply-templates select="book-part/body"/>

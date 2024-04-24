@@ -20,12 +20,18 @@
     <xsl:choose>
       <xsl:when test="atom:entry">
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
+        <xsl:variable name="jcode" select="tokenize(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,'/')[2]"/>
         <xsl:variable name="html-output" as="document-node()"
-          select="
+          select="if ($jcode = 'ersworks') 
+          then (saxon:transform(
+          saxon:compile-stylesheet(doc('../../xslt/main/contribgroup-html_ers.xsl')),
+          $source,
+          $runtime-params/* ))
+          else(
           saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/contribgroup-html.xsl')),
           $source,
-          $runtime-params/* )"/>
+          $runtime-params/* ))"/>
         <xsl:sequence select="$html-output"/>
       </xsl:when>
       <xsl:otherwise>
