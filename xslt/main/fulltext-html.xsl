@@ -72,6 +72,12 @@
           <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'guest-editor']">
+        <div class="preface">
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
+        </div>
+      </xsl:when>
       <xsl:when test="book-part[@specific-use eq 'published-online']">
         <div class="back-matter">
           <xsl:apply-templates select="book-part/body"/>
@@ -86,11 +92,12 @@
       <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part"> 
         <xsl:apply-templates/>
       </xsl:when>
-      <!--<xsl:when test="contains(base-uri(.),'/bpsworks/') and book-part[@id and @book-part-type]">
+      <xsl:when test="contains(base-uri(.),'/ersworks/') and book-part[@id and @book-part-type]">
         <div class="{book-part/@book-part-type}">
-          <xsl:apply-templates/>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
         </div>
-      </xsl:when>-->
+      </xsl:when>
       <!--<xsl:when test="some $jcode in ('/bpsworks/','/ersworks/') satisfies contains(base-uri(.),$jcode) and book-part[@id and @book-part-type]">
         <div class="{book-part/@book-part-type}">
           <xsl:apply-templates/>
