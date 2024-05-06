@@ -171,7 +171,7 @@
     </li>
   </xsl:template>
   
-  <xsl:template match="aff" mode="contrib-group">
+  <!--<xsl:template match="aff" mode="contrib-group">
     <xsl:element name="li">
       <xsl:attribute name="class">
         <xsl:value-of select="'aff'"/>
@@ -186,6 +186,47 @@
       </xsl:if>
       <xsl:value-of select="node() except label"/>
     </xsl:element>
+  </xsl:template>-->
+  
+  <xsl:template match="aff" mode="contrib-group">
+    <xsl:choose>
+      <xsl:when test="not(target)">
+        <xsl:element name="li">
+          <xsl:attribute name="class">
+            <xsl:value-of select="'aff'"/>
+          </xsl:attribute>
+          <xsl:attribute name="id">
+            <xsl:value-of select="@id"/>
+          </xsl:attribute>
+          <xsl:if test="label">
+            <span class="label">
+              <sup><xsl:value-of select="label"/></sup>
+            </span>
+          </xsl:if>
+          <xsl:value-of select="node() except label"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="target">
+        <xsl:for-each-group select="*" group-starting-with="target">
+          <xsl:element name="li">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'aff'"/>
+            </xsl:attribute>
+            <xsl:attribute name="id">
+              <xsl:value-of select="current-group()/@id"/>
+            </xsl:attribute>
+            <xsl:if test="current-group()/self::label">
+              <span class="label">
+                <sup><xsl:value-of select="current-group()/self::label"/></sup>
+              </span>
+            </xsl:if>
+            <xsl:value-of select="current-group() except current-group()/self::label"/>
+          </xsl:element>
+          <xsl:text>
+        </xsl:text>
+        </xsl:for-each-group>
+      </xsl:when>
+      </xsl:choose>
   </xsl:template>
   
 </xsl:stylesheet>
