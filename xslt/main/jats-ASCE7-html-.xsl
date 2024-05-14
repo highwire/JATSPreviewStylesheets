@@ -3471,7 +3471,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="@ext-link-type = ('standard', 'chapter', 'section', 'sec', 'disp-formula', 'fig', 'table', 'list')">
         <xsl:variable name="ext-link-type" select="@ext-link-type"/>
-        <xsl:variable name="standard_id" select="if(contains(@xlink:href,'#'))then(if(starts-with(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else(if(starts-with(@xlink:href,'st')) then(substring-after(@xlink:href,'st')) else(@xlink:href))"/>
+        <xsl:variable name="standard_id" select="if(contains(@xlink:href,'#'))then(if(start-with(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else(if(start-with(@xlink:href,'st')) then(substring-after(@xlink:href,'st')) else(@xlink:href))"/>
         <xsl:variable name="part_chapter_section_id" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href">
