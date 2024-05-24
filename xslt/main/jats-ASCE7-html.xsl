@@ -3743,7 +3743,7 @@ or pipeline) parameterized.
                     </xsl:choose>
                   </xsl:when>
                   <xsl:when test="@ref-type='standard'">
-                    <xsl:value-of select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
+                    <xsl:value-of select="if(contains(@rid,'st')) then(concat('/content/standard/',substring-after(@rid,'st'))) else(concat('/content/standard/',@rid))"/>
                   </xsl:when>
                   <xsl:when test="starts-with(@rid,$ref-sec)">
                     <xsl:value-of select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
