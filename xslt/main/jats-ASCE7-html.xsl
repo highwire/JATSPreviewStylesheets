@@ -3467,7 +3467,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="@ext-link-type = ('standard', 'chapter', 'section', 'sec', 'disp-formula', 'fig', 'table', 'list')">
         <xsl:variable name="ext-link-type" select="@ext-link-type"/>
-        <xsl:variable name="standard_id" select="if(contains(@xlink:href,'#'))then(if(contains(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else(@xlink:href)"/>
+        <xsl:variable name="standard_id" select="if(contains(@xlink:href,'#'))then(if(starts-with(tokenize(@xlink:href,'#')[1],'st')) then(replace(tokenize(@xlink:href,'#')[1],'[A-Za-z]+','')) else(tokenize(@xlink:href,'#')[1]))else(if(starts-with(@xlink:href,'st')) then(substring-after(@xlink:href,'st')) else(@xlink:href))"/>
         <xsl:variable name="part_chapter_section_id" select="if(contains(@xlink:href,'#'))then(tokenize(@xlink:href,'#')[2])else('')"/>
         <a>
           <xsl:attribute name="href">
@@ -3476,8 +3476,7 @@ or pipeline) parameterized.
             <xsl:with-param name="part-chapter-section-fig-id"><xsl:value-of select="$part_chapter_section_id"/></xsl:with-param>
             <xsl:with-param name="section"><xsl:value-of select="if(@ext-link-type=('sec','section','part','disp-formula', 'fig', 'table', 'list')) then(true()) else(false())"/></xsl:with-param>
             <xsl:with-param name="extlinktype"><xsl:value-of select="$ext-link-type"/></xsl:with-param>
-            </xsl:call-template>
-          </xsl:attribute>
+            </xsl:call-template></xsl:attribute>
           <xsl:attribute name="data-rid" select="@xlink:href"/>
           <xsl:apply-templates/>
         </a>
@@ -3740,7 +3739,7 @@ or pipeline) parameterized.
                     </xsl:choose>
                   </xsl:when>
                   <xsl:when test="@ref-type='standard'">
-                    <xsl:value-of select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
+                    <xsl:value-of select="if(contains(@rid,'st')) then(concat('/content/standard/',substring-after(@rid,'st'))) else(concat('/content/standard/',@rid))"/>
                   </xsl:when>
                   <xsl:when test="starts-with(@rid,$ref-sec)">
                     <xsl:value-of select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>

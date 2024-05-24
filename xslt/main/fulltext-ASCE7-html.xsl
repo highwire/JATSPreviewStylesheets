@@ -39,7 +39,7 @@
         <div class="{book-part/lower-case(@book-part-type)}">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
-          <!--Vishnu:- Only applying the back of chapter for reference only. it contains version, erratum, supplement. And that will be trasform seperately in section transformation-->
+          <!--Vishnu:- Applying only the ref-lsit section from the back not the version, erratum, supplement. And that will be trasform seperately in section transformation-->
           <xsl:apply-templates select="book-part/back/sec[lower-case(@sec-type)='references']"/>
         </div>
       </xsl:when>
