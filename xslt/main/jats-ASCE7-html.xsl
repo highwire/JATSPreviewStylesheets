@@ -3032,7 +3032,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x or self::article-title])">
-      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else(.,'. ')"/>
+      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else('. ')"/>
     </xsl:if>
   </xsl:template>
 
@@ -3831,7 +3831,8 @@ or pipeline) parameterized.
               <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
             </div>
           </xsl:when>
-        <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list','ch')">
+        <xsl:when test="@ref-type=('sec','part','chapter','standard', 'list','ch')">
+            <!-- <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list','ch')"> -->
             <xsl:variable name="reference-atom-query" select="hwp:getReferencedatom(concat('asceworks/standard/',$standardname), @rid)"/>
             <!--<xsl:message>reference-atom-query:= <xsl:value-of select="$reference-atom-query"/></xsl:message>-->
             <a>
@@ -3857,6 +3858,30 @@ or pipeline) parameterized.
                   <xsl:value-of select="$link"/>
                 </xsl:otherwise>
               </xsl:choose></xsl:attribute>
+              <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:when>
+          <!-- Resolving cross chapter linking for disp-formula, bibr(references), fig and table -->
+          <xsl:when test="@ref-type=('disp-formula','bibr','fig','table')">
+            <xsl:variable name="ref-type" select="@ref-type"/>
+            <!--element name mapping with its reference type ref-type-->
+            <xsl:variable name="elementMapping">
+              <element ref-type="disp-formula" element="disp-formula"/>
+              <element ref-type="bibr" element="ref"/>
+              <element ref-type="fig" element="fig"/>
+              <element ref-type="table" element="table-wrap"/>
+            </xsl:variable>
+            <xsl:variable name="refIDElementName" select="$elementMapping/element[@ref-type = $ref-type]/@element"/>
+            <!--/content/standard/9780784440094/part/provisions/standard-chapter/s2#dc18-->
+            <xsl:variable name="apath" select="concat('asceworks/standard/',$standardname)"/>
+            <xsl:variable name="reference-source-id-apath" select="hwp:getReferencedSourceXML($apath,$refIDElementName,'id',@rid)"/>
+            <xsl:variable name="commentry2provision_apath" select="if (contains($reference-source-id-apath,'/commentary/')) then (hwp:getReferencedatom(concat('asceworks/standard/',$standardname), document($reference-source-id-apath)/book-part/book-part-meta/title-group/title/xref/@rid)) else ($reference-source-id-apath)"/>
+            <xsl:variable name="provisionURL" select="if (ends-with($commentry2provision_apath,'.source.xml')) then substring-before($commentry2provision_apath,'.source.xml') else substring-before($commentry2provision_apath,'.atom')"/>
+            <a>
+              <xsl:attribute name="href">
+                <xsl:value-of select="concat(replace($provisionURL,'/asceworks/','/content/'),'#',@rid)"/>
+              </xsl:attribute>
               <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
               <xsl:apply-templates/>
             </a>
@@ -3898,6 +3923,15 @@ or pipeline) parameterized.
     <xsl:param name="corpus"/>
     <xsl:param name="slugID"/>
     <xsl:sequence select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
+  </xsl:function>
+
+  <!--Find source based on apath, element, attribute and attribute value-->
+  <xsl:function name="hwp:getReferencedSourceXML">
+    <xsl:param name="apath"/>
+    <xsl:param name="element"/>
+    <xsl:param name="attribute"/>
+    <xsl:param name="attribute-value"/>
+    <xsl:sequence select="doc(concat('http://atom.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getDocumentURI.xqy&amp;apath=',$apath,'&amp;element=',$element,'&amp;attribute=',$attribute,'&amp;attribute-value=',$attribute-value))"></xsl:sequence>
   </xsl:function>
 
   <!-- ============================================================= -->
