@@ -3914,6 +3914,15 @@ or pipeline) parameterized.
     <xsl:param name="slugID"/>
     <xsl:sequence select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
   </xsl:function>
+  
+  <!--Find source based on apath, element, attribute and attribute value-->
+  <xsl:function name="hwp:getReferencedSourceXML">
+    <xsl:param name="apath"/>
+    <xsl:param name="element"/>
+    <xsl:param name="attribute"/>
+    <xsl:param name="attribute-value"/>
+    <xsl:sequence select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getDocumentURI.xqy&amp;apath=',$apath,'&amp;element=',$element,'&amp;attribute=',$attribute,'&amp;attribute-value=',$attribute-value))"></xsl:sequence>
+  </xsl:function>
 
   <!-- ============================================================= -->
   <!--  Formatting elements                                          -->
