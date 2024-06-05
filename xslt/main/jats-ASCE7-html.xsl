@@ -3028,7 +3028,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x or self::article-title])">
-      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else(.,'. ')"/>
+      <xsl:value-of select="if(ends-with(.,'.')) then(' ') else('. ')"/>
     </xsl:if>
   </xsl:template>
 
