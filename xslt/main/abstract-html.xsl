@@ -25,8 +25,9 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- ERSSCOL-468: Added new class 'key-points' -->
   <xsl:template match="abstract">
-    <div class="abstract">
+    <div class="{concat('abstract', ' ', lower-case(@abstract-type))}">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
