@@ -108,10 +108,16 @@
   <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]" mode="contrib-group">
     <li class="contributor">
       <xsl:choose>
-        <xsl:when test="contrib-id[@contrib-id-type eq 'orcid']">
+        <!--<xsl:when test="contrib-id[@contrib-id-type eq 'orcid']">
           <span class="name" contrib-id-type="{contrib-id/@contrib-id-type}" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="contrib-id" mode="#current"/><xsl:apply-templates select="bio" mode="bio-and-orcid"/></xsl:attribute>
             <xsl:attribute name="data-original-title" select="if(@contrib-type eq 'guest-editor') then 'Guest Editor Bio' else if(@contrib-type eq 'editor') then 'Editor Bio' else 'Author Bio'"/>
+            <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+          </span>
+        </xsl:when>-->
+        <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
+          <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')]"/>
+          <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true" data-content="&lt;div&gt;&lt;a href=&#34;{//author-notes/fn[contains(.,'orcid')]/normalize-space(p)}&#34; class=&#34;orcid&#34; target=&#34;_blank&#34;&gt;{concat(name/given-names,' ',name/surname), string-name, degrees}&lt;/a&gt;&lt;/div&gt;" data-original-title="Author Bio">
             <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
           </span>
         </xsl:when>
