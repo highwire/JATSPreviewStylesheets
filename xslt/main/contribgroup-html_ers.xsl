@@ -115,6 +115,12 @@
             <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
           </span>
         </xsl:when>
+        <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
+          <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')]"/>
+          <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true" data-content="&lt;div&gt;&lt;a href=&#34;{if(//author-notes/fn[contains(@id,'orcid')]/p/uri) then (//author-notes/fn[contains(@id,'orcid')]/p/uri/normalize-space(text())) else (//author-notes/fn[contains(@id,'orcid')]/p/normalize-space(text()))}&#34; class=&#34;orcid&#34; target=&#34;_blank&#34;&gt;{concat(name/given-names,' ',name/surname), string-name, degrees}&lt;/a&gt;&lt;/div&gt;" data-original-title="Author Bio">
+            <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+          </span>
+        </xsl:when>
         <xsl:when test="bio">
           <span tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="bio" mode="#current"/></xsl:attribute>
