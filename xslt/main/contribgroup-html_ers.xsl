@@ -3,11 +3,11 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   exclude-result-prefixes="xlink mml">
-
+  
   <xsl:import href="jats-html.xsl"/>
-
+  
   <xsl:output encoding="UTF-8"/>
-
+  
   <xsl:template match="/">
     <xsl:where-populated>
       <div>
@@ -57,25 +57,37 @@
           </xsl:element>
         </ul>
       </xsl:if>
-      <xsl:if test="//book-part-meta/author-notes/fn or //book-meta/author-notes/fn">
+      <xsl:if test="//book-part-meta/author-notes/fn | //book-meta/author-notes/fn">
         <ul class="authnote-list" data-list-type="authornote">
-          <xsl:element name="li">
-            <xsl:attribute name="class">
-              <xsl:value-of select="'authornote'"/>
-            </xsl:attribute>
-            <xsl:attribute name="id">
-              <xsl:value-of select="//book-part-meta/author-notes/fn/@id|//book-meta/author-notes/fn/@id"/>
-            </xsl:attribute>
-            <xsl:if test="//book-part-meta/author-notes/fn/label or //book-meta/author-notes/fn/label">
-              <span class="label">
-                <xsl:value-of select="//book-part-meta/author-notes/fn/label|//book-meta/author-notes/fn/label"/>
-              </span>
-            </xsl:if>
-            <xsl:apply-templates select="//book-part-meta/author-notes/fn/node()|//book-meta/author-notes/fn/node() except (//book-part-meta/author-notes/fn/label|//book-meta/author-notes/fn/label)" mode="#current"/>
-          </xsl:element>
+          <xsl:apply-templates select="//book-part-meta/author-notes/fn | //book-meta/author-notes/fn"/>
         </ul>
       </xsl:if>
     </div>
+  </xsl:template>
+  
+  <xsl:template match="//book-part-meta/author-notes | //book-meta/author-notes">
+    <xsl:apply-templates select="fn"/>
+  </xsl:template>
+  
+  <xsl:template match="fn[parent::author-notes]">
+    <xsl:element name="li">
+      <xsl:attribute name="class">
+        <xsl:value-of select="'authornote'"/>
+      </xsl:attribute>
+      <xsl:attribute name="id">
+        <xsl:value-of
+          select="@id"/>
+      </xsl:attribute>
+      <xsl:if test="label">
+        <span class="label">
+          <xsl:value-of
+            select="label"/>
+        </span>
+      </xsl:if>
+      <xsl:apply-templates
+        select="node() except (label)"
+        mode="#current"/>
+    </xsl:element>
   </xsl:template>
   
   <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta or parent::article-meta][contrib[@contrib-type eq 'editor']]" mode="contrib-group">
@@ -108,16 +120,33 @@
   <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]" mode="contrib-group">
     <li class="contributor">
       <xsl:choose>
-        <!--<xsl:when test="contrib-id[@contrib-id-type eq 'orcid']">
+        <xsl:when test="contrib-id[@contrib-id-type eq 'orcid']">
           <span class="name" contrib-id-type="{contrib-id/@contrib-id-type}" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="contrib-id" mode="#current"/><xsl:apply-templates select="bio" mode="bio-and-orcid"/></xsl:attribute>
             <xsl:attribute name="data-original-title" select="if(@contrib-type eq 'guest-editor') then 'Guest Editor Bio' else if(@contrib-type eq 'editor') then 'Editor Bio' else 'Author Bio'"/>
             <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
           </span>
-        </xsl:when>-->
+        </xsl:when>
         <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
           <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')]"/>
-          <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true" data-content="&lt;div&gt;&lt;a href=&#34;{//author-notes/fn[contains(.,'orcid')]/normalize-space(p)}&#34; class=&#34;orcid&#34; target=&#34;_blank&#34;&gt;{concat(name/given-names,' ',name/surname), string-name, degrees}&lt;/a&gt;&lt;/div&gt;" data-original-title="Author Bio">
+          <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+            <xsl:attribute name="data-content">
+              <xsl:choose>
+                <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn[child::p/uri]/@id[contains(.,'orcid')]">
+                  <xsl:value-of select="concat('&lt;div&gt;&lt;a href=&#34;',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text()),'&#34;')"/>
+                </xsl:when>
+                <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
+                  <xsl:value-of select="concat('&lt;div&gt;&lt;a href=&#34;',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text()),'&#34;')"/>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="class" select="'&#34;orcid&#34;'"/>
+            <xsl:attribute name="target">
+              <xsl:text>&#34;_blank&#34;&gt;</xsl:text>
+              <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+              <xsl:text>&lt;/a&gt;&lt;/div&gt;</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="data-original-title" select="'Author Bio'"/>
             <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
           </span>
         </xsl:when>
