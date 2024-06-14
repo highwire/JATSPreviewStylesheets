@@ -3,11 +3,11 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   exclude-result-prefixes="xlink mml">
-  
+
   <xsl:import href="jats-html.xsl"/>
-  
+
   <xsl:output encoding="UTF-8"/>
-  
+
   <xsl:template match="/">
     <xsl:where-populated>
       <div>
@@ -58,15 +58,15 @@
         </ul>
       </xsl:if>
       <xsl:if test="//book-part-meta/author-notes/fn | //book-meta/author-notes/fn">
-        <ul class="authnote-list" data-list-type="authornote">
-          <xsl:apply-templates select="//book-part-meta/author-notes/fn | //book-meta/author-notes/fn"/>
-        </ul>
+      <ul class="authnote-list" data-list-type="authornote">
+      <xsl:apply-templates select="//book-part-meta/author-notes/fn | //book-meta/author-notes/fn"/>
+      </ul>
       </xsl:if>
     </div>
   </xsl:template>
-  
+
   <xsl:template match="//book-part-meta/author-notes | //book-meta/author-notes">
-    <xsl:apply-templates select="fn"/>
+      <xsl:apply-templates select="fn"/>
   </xsl:template>
   
   <xsl:template match="fn[parent::author-notes]">
@@ -129,21 +129,39 @@
         </xsl:when>
         <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
           <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')]"/>
+          <xsl:variable name="orcid-id">
+            <xsl:choose>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri[starts-with(text(),'http')]">
+                <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text())"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri[not(starts-with(text(),'http'))]">
+                <xsl:value-of select="concat('https://orcid.org/',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text()))"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p[starts-with(text(),'http')]">
+                <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text())"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p[not(starts-with(text(),'http'))]">
+                <xsl:value-of select="concat('https://orcid.org/',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text()))"/>
+              </xsl:when>
+              <xsl:otherwise>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content">
               <xsl:choose>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn[child::p/uri]/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text())"/>
+                  <xsl:value-of select="$orcid-id"/>
                 </xsl:when>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text())"/>
+                  <xsl:value-of select="$orcid-id"/>
                 </xsl:when>
               </xsl:choose>
             </xsl:attribute>
             <xsl:attribute name="class" select="'orcid'"/>
             <xsl:attribute name="target">
               <xsl:text>&#34;_blank&#34;&gt;</xsl:text>
-              <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+                <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
               <xsl:text>&lt;/a&gt;&lt;/div&gt;</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="data-original-title" select="'Author Bio'"/>
@@ -261,7 +279,7 @@
         </xsl:text>
         </xsl:for-each-group>
       </xsl:when>
-    </xsl:choose>
+      </xsl:choose>
   </xsl:template>
   
 </xsl:stylesheet>
