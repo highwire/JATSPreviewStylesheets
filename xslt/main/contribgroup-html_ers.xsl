@@ -129,14 +129,32 @@
         </xsl:when>
         <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
           <xsl:variable name="author-notes-rid" select="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')]"/>
+          <xsl:variable name="orcid-id">
+            <xsl:choose>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri[starts-with(text(),'http')]">
+                <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text())"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri[not(starts-with(text(),'http'))]">
+                <xsl:value-of select="concat('https://orcid.org/',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text()))"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p[starts-with(text(),'http')]">
+                <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text())"/>
+              </xsl:when>
+              <xsl:when test="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p[not(starts-with(text(),'http'))]">
+                <xsl:value-of select="concat('https://orcid.org/',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text()))"/>
+              </xsl:when>
+              <xsl:otherwise>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <span class="name" contrib-id-type="orcid" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content">
               <xsl:choose>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn[child::p/uri]/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text())"/>
+                  <xsl:value-of select="$orcid-id"/>
                 </xsl:when>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text())"/>
+                  <xsl:value-of select="$orcid-id"/>
                 </xsl:when>
               </xsl:choose>
             </xsl:attribute>
