@@ -133,14 +133,14 @@
             <xsl:attribute name="data-content">
               <xsl:choose>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn[child::p/uri]/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="concat('&lt;div&gt;&lt;a href=&#34;',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text()),'&#34;')"/>
+                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/uri/normalize-space(text())"/>
                 </xsl:when>
                 <xsl:when test="xref[@ref-type='author-notes']/@rid[contains(.,'orcid')] = parent::contrib-group/following-sibling::author-notes/fn/@id[contains(.,'orcid')]">
-                  <xsl:value-of select="concat('&lt;div&gt;&lt;a href=&#34;',parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text()),'&#34;')"/>
+                  <xsl:value-of select="parent::contrib-group/following-sibling::author-notes/fn[@id=$author-notes-rid]/p/normalize-space(text())"/>
                 </xsl:when>
               </xsl:choose>
             </xsl:attribute>
-            <xsl:attribute name="class" select="'&#34;orcid&#34;'"/>
+            <xsl:attribute name="class" select="'orcid'"/>
             <xsl:attribute name="target">
               <xsl:text>&#34;_blank&#34;&gt;</xsl:text>
                 <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
