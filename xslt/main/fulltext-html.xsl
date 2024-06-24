@@ -89,7 +89,7 @@
           <xsl:apply-templates select="article/back"/>
         </div>
       </xsl:when>
-      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part"> 
+      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part | fig | table-wrap">
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:when test="contains(base-uri(.),'/ersworks/') and book-part[@id and @book-part-type]">
