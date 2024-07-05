@@ -3398,7 +3398,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="xref">
+  <!--<xsl:template match="xref">
     <a>
       <xsl:attribute name="href"
         select="
@@ -3407,7 +3407,7 @@ or pipeline) parameterized.
           else
             concat('#', @rid)"/>
       <xsl:attribute name="data-rid" select="@rid"/>
-      <!-- <xsl:attribute name="data">
+      <!-\- <xsl:attribute name="data">
         <xsl:if test="matches(@xlink:href,'atom://')">
 	  <xsl:variable name="domain" select="http://atom-dev.highwire.org/sgrworks.atom"/>
 	  <xsl:variable name="atom-id" select="substring-after(@xlink:ref,'sgrworks/')"/>
@@ -3417,11 +3417,34 @@ or pipeline) parameterized.
 	  <xsl:variable name="query" select="concat($domain,l:stub-to-query($stub))"/>
 	  <xsl:sequence select="doc($query)/atom:feed/atom:entry/atom:link[@rel eq 'self']/@href"/>
 	</xsl:if>
-      </xsl:attribute> -->
+      </xsl:attribute> -\->
+      <xsl:apply-templates/>
+    </a>
+  </xsl:template>-->
+
+  <xsl:template match="xref">
+    <a>
+      <xsl:choose>
+        <xsl:when test="(@xlink:href and starts-with(@xlink:href,'atom://'))">
+          <xsl:variable name="corpus" select="tokenize(@xlink:href,'/')[3]"/>
+          <xsl:variable name="atomID" select="substring-before(tokenize(@xlink:href,'/')[4],'#')"/>
+          <xsl:variable name="hashID" select="substring-after(@xlink:href,'#')"/>
+          <xsl:variable name="queryURL" select="concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/get.xqy&amp;corpus=',$corpus,'&amp;element=atom:id&amp;element-value=',$atomID)"/>
+          <xsl:variable name="apath" select="document($queryURL)//apath/text()"/>
+          <xsl:attribute name="href" select="if ($apath != '') then concat('/content', substring-before(substring-after($apath, tokenize($apath,'/')[2]),'.atom'),'#',$hashID) else @xlink:href"/>  
+        </xsl:when>
+        <xsl:otherwise><xsl:attribute name="href"
+          select="
+          if (@xlink:href) then
+          @xlink:href
+          else
+          concat('#', @rid)"/></xsl:otherwise>
+      </xsl:choose>
+      
+      <xsl:attribute name="data-rid" select="@rid"/>
       <xsl:apply-templates/>
     </a>
   </xsl:template>
-
 
 
   <!-- ============================================================= -->
