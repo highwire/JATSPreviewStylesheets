@@ -2817,6 +2817,10 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="year[parent::mixed-citation]">
+    <xsl:if
+      test="not(preceding-sibling::*[1][self::node()=' '])">
+      <xsl:text> </xsl:text>
+    </xsl:if>
     <span class="cit-pub-date">
       <xsl:apply-templates/>
     </span>
