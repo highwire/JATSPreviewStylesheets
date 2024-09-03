@@ -2827,8 +2827,8 @@ or pipeline) parameterized.
 
   <xsl:template match="article-title[parent::mixed-citation]">
     <xsl:if
-      test="not(preceding-sibling::*[1][self::x] or preceding-sibling::*[1][self::string-name[given-names[x]]])">
-      <!--<xsl:text>. </xsl:text>-->
+      test="not(preceding-sibling::*[1][self::node()=' '] or preceding-sibling::*[1][self::string-name[given-names[x]]])">
+      <xsl:text> </xsl:text>
     </xsl:if>
     <span class="cit-article-title">
       <xsl:apply-templates/>
