@@ -28,6 +28,11 @@
                     saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_BPS.xsl')),
                     $source,
                     $runtime-params/* ))
+                    else if (starts-with($jcode,'ersworks')) 
+                    then (saxon:transform(
+                    saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_ERS.xsl')),
+                    $source,
+                    $runtime-params/* ))
                     else (saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html.xsl')),
           $source,
