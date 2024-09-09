@@ -169,7 +169,7 @@ or pipeline) parameterized.
 
   <!-- Add corpus if required first-name and surname -->
   <xsl:variable name="first-last" select="if(some $jcode in base-uri() satisfies matches($jcode,'/ersworks/')) then true() else false()"/>
-
+  <xsl:variable name="content-type" select="doc(replace(base-uri(),'.source.xml','.atom'))//atom:link[@rel='self']/@href"/>
   <!-- Keys -->
 
   <!-- To reduce dependency on a DTD for processing, we declare
@@ -2188,11 +2188,23 @@ or pipeline) parameterized.
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates select="." mode="label"/>
       <xsl:apply-templates select="*[not(self::ref | self::ref-list)]"/>
-      <xsl:if test="ref">
+      <!--<xsl:if test="ref">
         <ol class="ref-list table">
           <xsl:apply-templates select="ref"/>
         </ol>
-      </xsl:if>
+      </xsl:if>-->
+      <xsl:choose>
+        <xsl:when test="ref and starts-with($content-type,'/ersworks/book/handbook/')">
+          <ul class="ref-list table">
+            <xsl:apply-templates select="ref"/>
+          </ul>
+        </xsl:when>
+        <xsl:otherwise>
+          <ol class="ref-list table">
+            <xsl:apply-templates select="ref"/>
+          </ol>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates select="ref-list"/>
     </div>
   </xsl:template>
