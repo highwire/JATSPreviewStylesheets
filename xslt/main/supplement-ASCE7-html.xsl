@@ -119,9 +119,6 @@
     <xsl:apply-templates/>
   </xsl:template>
   
-  <!--removing the supplement text as we are printing the same text as static-text field from item-tms json policy-->
-  <xsl:template match="notes[parent::sec/@sec-type = 'supplement']">
     
-  </xsl:template>
   
 </xsl:stylesheet>
