@@ -29,7 +29,12 @@
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
         <!-- convert into HTML for display -->
         <xsl:variable name="step1" as="document-node()"
-          select="
+          select="if ($corpus eq 'ersworks') 
+          then (saxon:transform(
+          saxon:compile-stylesheet(doc('../../xslt/main/metadata-html-ers.xsl')),
+          $source,
+          $runtime-params/* )) 
+          else 
           saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/metadata-html.xsl')),
           $source,
