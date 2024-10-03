@@ -10,6 +10,7 @@
     encoding="utf-8" indent="yes"
     include-content-type="no"/>
 
+  <xsl:variable name="corpus" select="atom:entry/atom:link[@rel='self']/tokenize(@href,'/')[2]"/>
   <xsl:param name="runtime-params">
     <base-dir>
       <xsl:value-of
