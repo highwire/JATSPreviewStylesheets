@@ -86,8 +86,8 @@
       <xsl:if test="not($meta.pdf-url = '')">
         <meta name="citation_pdf_url" content="{$meta.pdf-url}"/>
       </xsl:if>
-      <xsl:if test="$book-atom//atom:entry/nlm:book-id[@book-id-type eq 'doi']">
-        <meta name="citation_doi" content="{$book-atom//atom:entry/nlm:book-id[@book-id-type eq 'doi']}"/>
+      <xsl:if test="$book-atom//atom:entry/(nlm:book-part-id[@book-part-id-type='doi']|nlm:book-id[@book-id-type='doi'])">
+        <meta name="citation_doi" content="{doc(concat('http://atom.highwire.org',$atom-id))//atom:entry/(nlm:book-part-id[@book-part-id-type='doi']|nlm:book-id[@book-id-type='doi'])}"/>
       </xsl:if>
       <xsl:if test="$source/book-part/(book-part-meta|book-meta)/fpage">
         <meta name="citation_firstpage" content="{$source/book-part/(book-part-meta|book-meta)/fpage}"/>
