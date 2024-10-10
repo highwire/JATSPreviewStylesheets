@@ -2537,7 +2537,8 @@ or pipeline) parameterized.
       </xsl:if>
       <xsl:call-template name="assign-src"/>
     </img>
-    <xsl:if test="local-name() = 'graphic' and matches(base-uri(),'/ersworks')">
+    <!--  Added jcode for WILYSCOL-129: For wileyworks  'additional-markup' for open new tab.  -->
+    <xsl:if test="local-name() = 'graphic' and matches(base-uri(),'/ersworks|/wileyworks')">
       <div class="additional-markup"/>
     </xsl:if>
   </xsl:template>
@@ -3114,7 +3115,8 @@ or pipeline) parameterized.
       <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
     </xsl:copy>
-    <xsl:if test="local-name() = 'table' and matches(base-uri(),'/ersworks')">
+    <!--  Added jcode for WILYSCOL-129: For wileyworks  'additional-markup' for open new tab.  -->
+    <xsl:if test="local-name() = 'table' and matches(base-uri(),'/ersworks|/wileyworks')">
       <div class="additional-markup"/>
     </xsl:if>
   </xsl:template>
