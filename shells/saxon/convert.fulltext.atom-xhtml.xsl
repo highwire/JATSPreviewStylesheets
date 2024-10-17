@@ -23,16 +23,22 @@
         <!-- convert into HTML for display -->
         <xsl:variable name="step1" as="document-node()"
           select="if (starts-with($jcode,'bps')) 
-                    then (saxon:transform(
-                    saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_BPS.xsl')),
-                    $source,
-                    $runtime-params/* ))
-                    else if (starts-with($jcode,'ersworks')) 
-                    then (saxon:transform(
-                    saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_ERS.xsl')),
-                    $source,
-                    $runtime-params/* ))
-                    else (saxon:transform(
+          then (saxon:transform(
+          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_BPS.xsl')),
+          $source,
+          $runtime-params/* ))
+          else if (starts-with($jcode,'ersworks')) 
+          then (saxon:transform(
+          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_ERS.xsl')),
+          $source,
+          $runtime-params/* ))
+          else if (starts-with($jcode,'wileyworks')) 
+          then (saxon:transform(
+          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html_FigCaption.xsl')),
+          $source,
+          $runtime-params/* ))
+          
+          else (saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html.xsl')),
           $source,
           $runtime-params/* ))"/>
