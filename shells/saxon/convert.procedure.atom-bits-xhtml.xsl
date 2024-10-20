@@ -24,7 +24,7 @@
         <xsl:variable name="step1" as="document-node()"
           select="
           saxon:transform(
-          saxon:compile-stylesheet(doc('../../xslt/main/procedure-guideline-html.xsl.xsl')),
+          saxon:compile-stylesheet(doc('../../xslt/main/procedure-guideline-html.xsl')),
           $source,
           $runtime-params/* )"/>
         <xsl:sequence select="$step1"/>
