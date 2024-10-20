@@ -11,9 +11,9 @@
   <xsl:template match="/">
     <xsl:if test="//fig">
       <div class="floats">
-        <xsl:if test="//fig">
+        <xsl:if test="//fig[label]">
 	  <h2 class="section-title">Figures</h2>
-	  <xsl:apply-templates select="//fig"/>
+	  <xsl:apply-templates select="//fig[label]"/>
 	</xsl:if>
      </div>
     </xsl:if>
