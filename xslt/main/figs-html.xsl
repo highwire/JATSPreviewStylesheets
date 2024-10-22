@@ -4,7 +4,7 @@
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   exclude-result-prefixes="xlink mml">
   <!--WILYSCOL-81: change Date: 22-10-2024  Heading changes 'figures' to  'Illustrations' -->
-  <xsl:import href="jats-html.xsl"/>
+  <xsl:import href="jats-html_FigCaption.xsl"/>
 
   <xsl:output encoding="UTF-8"/>
 
