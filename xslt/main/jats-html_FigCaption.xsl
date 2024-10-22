@@ -2462,7 +2462,7 @@ or pipeline) parameterized.
   <xsl:template match="label" mode="hw-label">
     <xsl:choose>
       <!-- Wileyworks -->
-      <xsl:when test="(parent::fig or parent::table-wrap)">
+      <xsl:when test="(parent::fig or parent::table-wrap or parent::boxed-text/table-wrap)">
       </xsl:when>
       <xsl:otherwise>
         <div class="label">
@@ -2477,8 +2477,8 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-
-<!--  <xsl:template match="caption/title">
+  
+  <!--  <xsl:template match="caption/title">
     <div class="caption-title">
       <xsl:apply-templates/>
     </div>
@@ -2486,12 +2486,21 @@ or pipeline) parameterized.
 -->
   <!-- Wilyscol-90; Change label and caption need to one block -->
   <xsl:template match="caption/title">
-    <div class="caption-title">
-      <xsl:if test="../preceding-sibling::label">
-        <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </div>
+    <xsl:choose>
+      <xsl:when test="ancestor::fig or ancestor::table-wrap or ancestor::boxed-text/table-wrap">
+        <div class="caption-title">
+          <xsl:if test="../preceding-sibling::label">
+            <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>
+          </xsl:if>
+          <xsl:apply-templates/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="caption-title">
+          <xsl:apply-templates/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
 
@@ -2562,8 +2571,12 @@ or pipeline) parameterized.
       <xsl:call-template name="assign-src"/>
     </img>
     <!--  Added jcode for WILYSCOL-129: For wileyworks  'additional-markup' for open new tab.  -->
-    <xsl:if test="local-name() = 'graphic' and matches(base-uri(),'/ersworks|/wileyworks')">
+<!--    <xsl:if test="local-name() = 'graphic' and matches(base-uri(),'/ersworks|/wileyworks')">
       <div class="additional-markup"/>
+    </xsl:if> -->
+    <!--  Added jcode for WILYSCOL-81: Added new class (graphic positon) due to two images are supplied in one fig element inside.  -->
+    <xsl:if test="local-name() = 'graphic' and matches(base-uri(),'/ersworks|/wileyworks')">
+      <div class="{if (count(parent::*/graphic) > 1) then concat('additional-markup position', count(preceding-sibling::graphic)+1) else 'additional-markup'}"></div>
     </xsl:if>
   </xsl:template>
 
